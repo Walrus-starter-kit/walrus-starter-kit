@@ -1,6 +1,7 @@
 # Project Roadmap - Walrus Starter Kit
 
 ## Project Overview
+
 **Target:** `npm create walrus-app@latest` - Production-ready CLI scaffolder
 **Architecture:** Monorepo + Base/Layer + Adapter Pattern
 **Timeline:** 8 days (Jan 18-25, 2026)
@@ -11,6 +12,7 @@
 ## 🗺️ Implementation Phases
 
 ### Phase 1: Monorepo Foundation (DONE)
+
 - [x] pnpm workspace setup
 - [x] Root configuration (TypeScript, ESLint, Prettier)
 - [x] Directory structure creation
@@ -19,6 +21,7 @@
 - [x] Build and test validation
 
 ### Phase 2: CLI Engine Core (COMPLETE)
+
 - [x] Commander.js setup
 - [x] Interactive prompts (prompts)
 - [x] Project context object
@@ -26,36 +29,46 @@
 - [x] Basic project generation logic
 - [x] Code review fixes applied (H2, H1, M2)
 - [x] All tests passing (55/55, 96.42% coverage)
-**Completed:** 2026-01-17 15:59
+      **Completed:** 2026-01-17 15:59
 
-### Phase 3: Template Base Layer (PENDING)
-- [ ] Adapter interface definitions
-- [ ] Core directory structure
-- [ ] Shared configuration files
+### Phase 3: Template Base Layer (COMPLETE)
+
+- [x] Adapter interface definitions
+- [x] Core directory structure
+- [x] Shared configuration files
+- [x] Environment validation utilities
+- [x] Type definitions and exports
+- [x] Base layer validation tests
+      **Completed:** 2026-01-17 16:55
 
 ### Phase 4: SDK Layer (PENDING)
+
 - [ ] @mysten/walrus implementation
 - [ ] SDK-specific dependencies
 
 ### Phase 5: Framework Layer (PENDING)
+
 - [ ] React + Vite template
 - [ ] Vue + Vite template
 - [ ] Plain TypeScript template
 
 ### Phase 6: Use Case Layers (PENDING)
+
 - [ ] Simple Upload implementation
 - [ ] File Gallery implementation
 - [ ] DeFi/NFT Metadata implementation
 
 ### Phase 7: Template Generation Engine (COMPLETE)
+
 - [x] Deep JSON merge logic
 - [x] File composition system
 - [x] Path resolution and copying
 - [x] Atomic generation (rollback on error)
 - [x] Path traversal & security hardening
-**Completed:** 2026-01-17 16:22
+      **Completed:** 2026-01-17 16:22
 
 ### Phase 8: Post-Install & Validation (PENDING)
+
 - [ ] Package manager detection
 - [ ] Dependency installation automation
 - [ ] Generated project validation
@@ -63,16 +76,32 @@
 ---
 
 ## 📈 Progress Summary
-- **Overall Completion:** 37% (3/8 Phases)
-- **Current Milestone:** Template Base Layer
-- **Last Update:** 2026-01-17 16:30
+
+- **Overall Completion:** 50% (4/8 Phases)
+- **Current Milestone:** SDK Layer Implementation
+- **Last Update:** 2026-01-17 16:55
 
 ---
 
 ## 📝 Changelog
 
-### [0.3.0] - 2026-01-17
+### [0.4.0] - 2026-01-17
+
 #### Completed
+
+- **Phase 3: Template Base Layer** - SDK-agnostic foundation with adapter pattern
+  - StorageAdapter interface (upload/download/delete/getInfo)
+  - Walrus type definitions (BlobId, WalrusConfig, UploadResult, etc.)
+  - Environment validation with Zod schemas
+  - Formatting utilities (file size, string truncation)
+  - Base template structure (10 files: src/, config, docs)
+  - Zero SDK dependencies (pure TypeScript + Zod)
+  - Base layer validation test suite
+
+### [0.3.0] - 2026-01-17
+
+#### Completed
+
 - **Phase 7: Template Generation Engine** - Atomic layered project generation
   - Template layer resolution (Base + SDK + Framework + Use Case + Add-ons)
   - Deep `package.json` merging with automated sorting
@@ -83,7 +112,9 @@
   - Extended test suite: 91/91 tests passing (97.5% coverage)
 
 ### [0.2.0] - 2026-01-17
+
 #### Completed
+
 - **Phase 2: CLI Engine Core** - Production-ready interactive CLI scaffolder
   - Commander.js argument parsing with full CLI flag support
   - Interactive 6-step wizard using prompts library
@@ -97,7 +128,9 @@
   - All code review fixes applied (H2, H1, M2)
 
 ### [0.1.0] - 2026-01-17
+
 #### Added
+
 - Initial monorepo structure with pnpm workspaces
 - Root-level shared tooling (TypeScript, ESLint, Prettier)
 - `packages/cli` package skeleton with build system
