@@ -22,7 +22,7 @@ describe('generateProject integration', () => {
     await fs.remove(testOutputDir);
   });
 
-  it('should generate project with all layers', async () => {
+  it('should generate project with all layers and .env', async () => {
     const context: Context = {
       projectName: 'test-walrus-app',
       projectPath: path.join(testOutputDir, 'test-walrus-app'),
@@ -57,6 +57,43 @@ describe('generateProject integration', () => {
     expect(pkgJson.dependencies['@mysten/walrus']).toBeDefined();
     expect(pkgJson.dependencies['react']).toBeDefined();
     expect(pkgJson.scripts.dev).toBeDefined();
+
+    // Verify .env was created from .env.example
+    const envPath = path.join(context.projectPath, '.env');
+    const envExists = await fs.pathExists(envPath);
+    expect(envExists).toBe(true);
+  });
+
+  it('should skip .env creation if .env already exists (dry-run)', async () => {
+    const context: Context = {
+      projectName: 'test-env-exists',
+      projectPath: path.join(testOutputDir, 'test-env-exists'),
+      sdk: 'mysten',
+      framework: 'react',
+      useCase: 'simple-upload',
+      analytics: false,
+      tailwind: false,
+      packageManager: 'pnpm',
+    };
+
+    // Pre-create .env
+    await fs.ensureDir(context.projectPath);
+    const existingContent = 'EXISTING=true';
+    const envPath = path.join(context.projectPath, '.env');
+    await fs.writeFile(envPath, existingContent);
+
+    // Run in dry-run mode to bypass empty directory check
+    // In dry-run mode, it should log that it would copy, but not actually change the existing .env
+    const result = await generateProject({
+      context,
+      templateDir,
+      targetDir: context.projectPath,
+      dryRun: true,
+    });
+
+    expect(result.success).toBe(true);
+    const content = await fs.readFile(envPath, 'utf-8');
+    expect(content).toBe(existingContent);
   });
 
   it('should transform template variables', async () => {

@@ -1,7 +1,7 @@
 ---
 title: "Auto-copy .env.example to .env"
 description: "Automatically copy .env.example to .env after project generation"
-status: pending
+status: in-progress
 priority: P2
 effort: 2h
 branch: main
@@ -42,7 +42,7 @@ Add `copyEnvFile` function to `file-ops.ts` with edge case handling
 Call `copyEnvFile` from `generator/index.ts` after template transform
 
 ### Phase 03: Update messages
-**Status**: pending
+**Status**: completed (2026-01-18 04:43)
 **File**: `phase-03-update-messages.md`
 **Effort**: 15min
 Update success message to reflect auto-copy (remove manual tip)

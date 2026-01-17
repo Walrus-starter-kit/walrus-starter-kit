@@ -85,6 +85,7 @@
 - [x] Package manager detection
 - [x] Dependency installation automation
 - [x] Git initialization removed (Manually managed by users)
+- [x] Automatic environment setup (.env.example → .env)
 - [x] Generated project validation
 - [x] Success/Error messaging system
 - [x] Automated template combination testing
@@ -109,6 +110,13 @@
 ---
 
 ## 📝 Changelog
+
+### [0.1.3] - 2026-01-18
+
+#### Added
+
+- **Automatic Environment Setup** - Auto-copy `.env.example` to `.env` after project generation
+- **Success UI Update** - Added auto-created `.env` note and removed manual setup tips
 
 ### [0.1.2] - 2026-01-18
 

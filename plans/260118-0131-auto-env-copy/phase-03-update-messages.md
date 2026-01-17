@@ -8,7 +8,7 @@
 ## Overview
 
 **Priority**: P2
-**Status**: pending
+**Status**: completed
 **Effort**: 15min
 
 Update success message to reflect automatic .env creation, remove manual copy tip.
@@ -75,11 +75,11 @@ displaySuccess changes:
 
 ## Todo List
 
-- [ ] Remove manual .env copy tip (lines 46-48)
-- [ ] Verify formatting alignment
-- [ ] Optional: Add auto-created note to Next Steps
-- [ ] Compile check: `npm run build`
-- [ ] Visual check: run CLI and verify output looks clean
+- [x] Remove manual .env copy tip (lines 46-48)
+- [x] Verify formatting alignment
+- [x] Optional: Add auto-created note to Next Steps
+- [x] Compile check: `npm run build`
+- [x] Visual check: run CLI and verify output looks clean
 
 ## Success Criteria
 

@@ -233,6 +233,20 @@ async function runTests() {
     }
   });
 
+  test('Creates .env file from .env.example', () => {
+    const projectName = 'test-env-file';
+    const projectPath = path.join(TEMP_DIR, projectName);
+
+    execSync(
+      `node "${CLI_BIN}" ${projectName} --sdk mysten --framework react --use-case simple-upload -p npm --skip-install --skip-git --skip-validation`,
+      { cwd: TEMP_DIR, encoding: 'utf-8' }
+    );
+
+    if (!fs.existsSync(path.join(projectPath, '.env'))) {
+      throw new Error('.env file not created');
+    }
+  });
+
   await cleanup();
 
   console.log(`\\n📊 Results: ${testsPassed} passed, ${testsFailed} failed\\n`);

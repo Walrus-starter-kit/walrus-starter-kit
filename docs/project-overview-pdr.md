@@ -40,9 +40,9 @@ The goal is to provide the "create-next-app" experience for the Walrus ecosystem
   - Maintain a compatibility matrix between SDKs and frameworks.
 - **Post-Install Automation:**
   - Automatic dependency installation (detecting pnpm, npm, yarn, bun).
-  - Git repository initialization and initial commit.
   - Project validation (package.json, node_modules, TypeScript compilation).
   - Clear success UI with next steps and helpful resources.
+  - Automatic environment setup (copying .env.example to .env).
 
 ### 4.2 Non-Functional Requirements
 

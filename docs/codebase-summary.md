@@ -20,9 +20,9 @@ The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`)
     - `file-ops.ts`: Low-level file system operations with safety checks (copy, empty check, ensure dir, env copy).
     - `types.ts`: Generator-specific type definitions.
   - `src/post-install/`: Post-install automation and validation.
-    - `index.ts`: Main orchestrator for dependency install, git init, and validation.
+    - `index.ts`: Main orchestrator for dependency install and validation.
     - `package-manager.ts`: Package manager detection and `install` command execution.
-    - `git.ts`: Git repository initialization and initial commit logic.
+    - `git.ts`: [DEPRECATED] Former git initialization logic.
     - `validator.ts`: Project validation (package.json, node_modules, TS compilation).
     - `messages.ts`: Success and error UI displays with next steps.
   - `src/prompts.ts`: Interactive 6-step wizard.

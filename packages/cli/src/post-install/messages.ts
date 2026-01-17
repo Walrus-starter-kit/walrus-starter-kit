@@ -23,6 +23,7 @@ export function displaySuccess(context: Context): void {
   console.log(
     `  ${kleur.gray('2.')} ${kleur.cyan(getRunCommand(packageManager, 'dev'))}`
   );
+  console.log(`  ${kleur.gray('Note:')} .env file created automatically`);
 
   console.log('\n' + kleur.bold('📚 Helpful Commands:'));
   console.log(
@@ -43,9 +44,6 @@ export function displaySuccess(context: Context): void {
   );
 
   console.log('\n' + kleur.bold('💡 Tips:'));
-  console.log(
-    `  - Copy ${kleur.cyan('.env.example')} to ${kleur.cyan('.env')}`
-  );
   console.log(`  - Install Sui Wallet browser extension`);
   console.log(`  - Get testnet SUI from the faucet`);
 
