@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layout } from '../../react/src/components/Layout.js';
+import { Layout } from './components/Layout.js';
 import { GalleryGrid } from './components/GalleryGrid.js';
 import { UploadModal } from './components/UploadModal.js';
 import './styles.css';
