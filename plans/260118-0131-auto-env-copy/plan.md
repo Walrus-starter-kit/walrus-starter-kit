@@ -36,7 +36,7 @@ Implement automatic copying of `.env.example` to `.env` during project generatio
 Add `copyEnvFile` function to `file-ops.ts` with edge case handling
 
 ### Phase 02: Integrate env copy
-**Status**: pending
+**Status**: completed (2026-01-18 02:08:00)
 **File**: `phase-02-integrate-env-copy.md`
 **Effort**: 30min
 Call `copyEnvFile` from `generator/index.ts` after template transform

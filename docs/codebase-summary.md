@@ -1,12 +1,12 @@
 # Codebase Summary
 
 **Project:** Walrus Starter Kit
-**Generated:** 2026-01-17
+**Generated:** 2026-01-18
 **Status:** Core MVP Ready - Version 0.1.0
 
 ## 1. Overview
 
-The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`) and modular templates for building Walrus applications on Sui. It uses a layered template system to allow mixing and matching SDKs, frameworks, and use cases. The CLI features a sophisticated generation engine that merges multiple template layers with atomic rollback support. Note: Vue and Plain TS frameworks are currently in development.
+The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`) and modular templates for building Walrus applications on Sui. It uses a layered template system to allow mixing and matching SDKs, frameworks, and use cases. The CLI features a sophisticated generation engine that merges multiple template layers with atomic rollback support and automatic environment configuration. Note: Vue and Plain TS frameworks are currently in development.
 
 ## 2. Directory Structure
 
@@ -276,6 +276,7 @@ Two complete demo templates built on React + SDK layers.
 - ✅ Project validation: Verification of dependencies and TypeScript compilation (Phase 8).
 - ✅ Success/Error UI with clear next steps and recovery instructions (Phase 8).
 - ✅ Integration tests for the complete scaffolding pipeline (Phase 8).
+- ✅ Integrated automatic .env file copying from .env.example (Phase 2).
 
 ## 9. Technology Stack
 

@@ -36,10 +36,10 @@ Run Interactive Prompts (prompts.ts) ←→ Skip if flags provided
 Build Context (context.ts) — Merge args + prompts
     ↓
 Validate Compatibility (validator.ts) — Matrix check
-     ↓
-Generate Project (generator/index.ts) — Layered composition
-     ↓
-Post-Install & Verification (post-install/index.ts) — PM install, Git init, Validation
+    ↓
+Generate Project (generator/index.ts) — Layered composition & .env setup
+    ↓
+Post-Install & Verification (post-install/index.ts) — PM install, Validation
 ```
 
 ### 2.2 Core Responsibilities
@@ -51,6 +51,7 @@ Post-Install & Verification (post-install/index.ts) — PM install, Git init, Va
 - **Layered Composition:** Assembling the final project by merging multiple template layers (Base + SDK + Framework + Use Case).
 - **Intelligent Merging:** Deep merging of `package.json` dependencies and scripts with automated sorting.
 - **Template Transformation:** Variable replacement within template files using mustache-style syntax (`{{projectName}}`).
+- **Automatic Environment Setup:** Auto-copying `.env.example` to `.env` after transformation with non-critical error handling and dry-run support.
 - **Post-Install Automation:** Automatic dependency installation using `cross-spawn`.
 - **Project Verification:** Post-generation checks for `node_modules` and TypeScript compilation integrity.
 - **Atomic Operations:** Rollback support for partially generated directories on failure or SIGINT.

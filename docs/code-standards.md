@@ -23,8 +23,9 @@ This document outlines the coding standards and structural conventions for the W
 - **Argument Parsing:** Use `commander.js` for robust CLI argument handling.
 - **Interactive Prompts:** Use `prompts` for wizard-style user input with dynamic choices.
 - **Hybrid Mode:** Support both interactive mode (no flags) and CI/CD mode (all flags provided).
+- **Dry-Run Support:** Core generation and environment setup must support `--dry-run` to allow users to preview changes without modifying the filesystem.
 - **Terminal Output:** Use `kleur` for colored console messages (lightweight, zero dependencies).
-- **File Operations:** Use `fs-extra` for cross-platform filesystem operations. Use utility functions in `generator/file-ops.ts` for common tasks like directory copying and environment file setup.
+- **File Operations:** Use `fs-extra` for cross-platform filesystem operations. Use utility functions in `generator/file-ops.ts` for common tasks like directory copying and automatic environment file setup (`.env.example` → `.env`).
 - **Subprocesses:** Use `cross-spawn` for running external commands (npm, git) to ensure compatibility across platforms (Windows/Linux/macOS).
 
 ### 3.2 Error Handling

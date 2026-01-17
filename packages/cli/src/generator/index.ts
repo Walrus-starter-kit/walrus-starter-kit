@@ -6,6 +6,8 @@ import {
   copyDirectory,
   ensureDirectory,
   isDirectoryEmpty,
+  copyEnvFile,
+  type EnvCopyResult,
 } from './file-ops.js';
 import { mergePackageJsonFiles } from './merge.js';
 import { buildVariables, transformDirectory } from './transform.js';
@@ -65,6 +67,25 @@ export async function generateProject(
     if (!dryRun) {
       const vars = buildVariables(context);
       await transformDirectory(targetDir, vars);
+    }
+
+    // Copy .env.example to .env
+    logger.info('🔐 Setting up environment file');
+    if (!dryRun) {
+      try {
+        const envResult = await copyEnvFile(targetDir);
+        if (envResult.created) {
+          logger.success('✓ Created .env from .env.example');
+        } else if (envResult.reason === 'already-exists') {
+          logger.info('ℹ️  .env already exists, skipped');
+        }
+        // Silent if no-source (not all templates have .env.example)
+      } catch (envError) {
+        // Non-critical: continue generation even if env copy fails
+        logger.warn(`⚠️  Could not copy .env file: ${envError}`);
+      }
+    } else {
+      logger.info('(dry-run) Would copy .env.example to .env');
     }
 
     logger.success(`✓ Project generated successfully!`);
