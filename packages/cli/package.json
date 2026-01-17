@@ -17,6 +17,9 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
+    "test:integration": "node tests/integration/integration.test.mjs",
+    "test:validation": "node tests/integration/validation.test.mjs",
+    "test:manual": "node tests/integration/manual.test.js",
     "prepublishOnly": "pnpm build"
   },
   "keywords": [
