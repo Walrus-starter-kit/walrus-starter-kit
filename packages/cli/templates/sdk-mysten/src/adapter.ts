@@ -16,12 +16,19 @@ export class MystenStorageAdapter implements StorageAdapter {
     const blob =
       data instanceof File ? new Uint8Array(await data.arrayBuffer()) : data;
 
+    // Require signer for upload (SDK v0.9.0)
+    if (!options?.signer) {
+      throw new Error(
+        'Signer required for blob upload. Please connect your wallet first.'
+      );
+    }
+
     try {
-      // v0.9.0 API: Object-based parameters
-      // NOTE: Signer integration pending Phase 4 - wallet signer will be passed via options.signer
+      // v0.9.0 API: Object-based parameters with signer
       const result = await client.writeBlobToUploadRelay({
         blob,
         nEpochs: options?.epochs || 1,
+        signer: options.signer as any, // WalletAccount used as signer (dapp-kit compatibility)
       });
 
       const blobId = result.newlyCreated.blobObject.blobId;

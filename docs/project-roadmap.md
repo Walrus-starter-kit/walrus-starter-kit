@@ -93,9 +93,9 @@
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 94% (Core Engine & React MVP Ready + Template Fixes 3/8)
+- **Overall Completion:** 95% (Core Engine & React MVP Ready + Template Fixes 4/8)
 - **Current Milestone:** v0.1.0 Alpha Release
-- **Last Update:** 2026-01-18 00:17
+- **Last Update:** 2026-01-18 00:35
 
 ---
 
@@ -128,6 +128,16 @@
   - TypeScript compilation verified - no errors
   - Code review score: 9/10 approved (after fixes)
   - **Completed:** 2026-01-18T00:17:00+07:00
+
+- **Wallet Signer Integration (Phase 4/8)** - HOC hook pattern for wallet-adapter bridge
+  - Created useStorageAdapter.ts hook injecting wallet signer into upload operations
+  - Updated storage.ts interface to use WalletAccount type from @mysten/wallet-standard
+  - Modified adapter.ts to accept signer in upload options (removed @ts-expect-error)
+  - Updated useStorage.ts to consume useStorageAdapter hook
+  - Implemented clean separation: React wallet context → vanilla TS adapter
+  - TypeScript compilation verified - no errors
+  - Code review score: 9/10 approved
+  - **Completed:** 2026-01-18T00:35:00+07:00
 
 #### Added
 

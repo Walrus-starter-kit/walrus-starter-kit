@@ -128,6 +128,8 @@ export function validateProjectName(name: string): boolean | string {
 - Use `useMutation` for write operations (upload, delete)
 - Use `useQuery` for read operations (download, getMetadata)
 - Enable queries conditionally when required params are present
+- **HOC Pattern:** `useStorageAdapter` injects wallet signer into operations
+- All storage hooks consume wallet-aware adapter via `useStorageAdapter()`
 
 **SDK Integration (v0.9.0):**
 
@@ -147,13 +149,30 @@ const size = response.metadata.V1.unencoded_length;
 
 **StorageAdapter Interface:**
 
-SDK layers implement base adapter interface without breaking changes:
+SDK layers implement base adapter interface. Signer injected at React layer via HOC hook:
 
 ```typescript
+// Base interface (base/src/adapters/storage.ts)
 interface UploadOptions {
   epochs?: number;
   contentType?: string;
-  signer?: any; // Typed properly with wallet integration
+  signer?: any; // Injected by useStorageAdapter hook from @mysten/dapp-kit currentAccount
+}
+
+// SDK implementation (sdk-mysten/src/adapter.ts)
+class MystenStorageAdapter {
+  async upload(data: File | Uint8Array, options?: UploadOptions): Promise<string> {
+    if (!options?.signer) throw new Error('Signer required');
+    return client.writeBlobToUploadRelay({ blob, nEpochs, signer: options.signer });
+  }
+}
+
+// React HOC hook (react/src/hooks/useStorageAdapter.ts)
+export function useStorageAdapter() {
+  const currentAccount = useCurrentAccount(); // From @mysten/dapp-kit
+  return useMemo(() => ({
+    upload: (file, options) => storageAdapter.upload(file, { ...options, signer: currentAccount })
+  }), [currentAccount]);
 }
 ```
 
