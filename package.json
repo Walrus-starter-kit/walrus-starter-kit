@@ -1,6 +1,9 @@
 {
   "name": "walrus-starter-kit",
-  "private": false,
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "version": "0.1.0",
   "type": "module",
   "engines": {
