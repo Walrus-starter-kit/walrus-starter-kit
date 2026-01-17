@@ -54,7 +54,7 @@ Adapter interface, base directory structure, core configs
 
 ### Phase 4: SDK Layer (@mysten/walrus) ⏱️ 6h
 
-**Status:** pending | **Priority:** High  
+**Status:** completed | **Completed:** 2026-01-17 17:20 | **Priority:** High  
 Walrus client, upload/download adapters, type definitions  
 📄 [Detailed Plan](./phase-04-sdk-layer.md)
 

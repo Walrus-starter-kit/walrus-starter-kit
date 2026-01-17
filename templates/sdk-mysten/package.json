@@ -1,0 +1,14 @@
+{
+  "name": "walrus-app-sdk-mysten",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mysten Walrus SDK layer for walrus-starter-kit",
+  "dependencies": {
+    "@mysten/walrus": "^1.0.0",
+    "@mysten/sui": "^1.10.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
