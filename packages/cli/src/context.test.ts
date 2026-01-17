@@ -28,7 +28,8 @@ describe('buildContext', () => {
     expect(context.sdk).toBe('mysten');
     expect(context.framework).toBe('react');
     expect(context.useCase).toBe('simple-upload');
-    expect(context.analytics).toBe(true);
+    // Temporarily disabled until templates are implemented
+    expect(context.analytics).toBe(false);
     expect(context.tailwind).toBe(false);
     expect(context.packageManager).toBe('pnpm');
     expect(context.projectPath).toMatch(/test-app$/);
@@ -50,8 +51,9 @@ describe('buildContext', () => {
     expect(context.sdk).toBe('tusky');
     expect(context.framework).toBe('vue');
     expect(context.useCase).toBe('gallery');
+    // Temporarily disabled until templates are implemented
     expect(context.analytics).toBe(false);
-    expect(context.tailwind).toBe(true);
+    expect(context.tailwind).toBe(false);
   });
 
   it('should prioritize args over prompt results', () => {
@@ -79,19 +81,21 @@ describe('buildContext', () => {
 
   it('should convert analytics to boolean correctly', () => {
     const base = { sdk: 'mysten', framework: 'react', useCase: 'simple-upload' };
-    expect(buildContext({ projectName: 'test', analytics: true, ...base }, {}).analytics).toBe(true);
+    // All analytics values should be forced to false until templates are implemented
+    expect(buildContext({ projectName: 'test', analytics: true, ...base }, {}).analytics).toBe(false);
     expect(buildContext({ projectName: 'test', analytics: false, ...base }, {}).analytics).toBe(false);
-    expect(buildContext({ projectName: 'test', analytics: 1, ...base }, {}).analytics).toBe(true);
+    expect(buildContext({ projectName: 'test', analytics: 1, ...base }, {}).analytics).toBe(false);
     expect(buildContext({ projectName: 'test', analytics: 0, ...base }, {}).analytics).toBe(false);
-    expect(buildContext({ projectName: 'test', analytics: 'yes', ...base }, {}).analytics).toBe(true);
+    expect(buildContext({ projectName: 'test', analytics: 'yes', ...base }, {}).analytics).toBe(false);
     expect(buildContext({ projectName: 'test', analytics: '', ...base }, {}).analytics).toBe(false);
   });
 
   it('should convert tailwind to boolean correctly', () => {
     const base = { sdk: 'mysten', framework: 'react', useCase: 'simple-upload' };
-    expect(buildContext({ projectName: 'test', tailwind: true, ...base }, {}).tailwind).toBe(true);
+    // All tailwind values should be forced to false until templates are implemented
+    expect(buildContext({ projectName: 'test', tailwind: true, ...base }, {}).tailwind).toBe(false);
     expect(buildContext({ projectName: 'test', tailwind: false, ...base }, {}).tailwind).toBe(false);
-    expect(buildContext({ projectName: 'test', tailwind: 1, ...base }, {}).tailwind).toBe(true);
+    expect(buildContext({ projectName: 'test', tailwind: 1, ...base }, {}).tailwind).toBe(false);
     expect(buildContext({ projectName: 'test', tailwind: 0, ...base }, {}).tailwind).toBe(false);
   });
 
