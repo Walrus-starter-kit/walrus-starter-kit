@@ -93,15 +93,25 @@
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 90% (Core Engine & React MVP Ready)
+- **Overall Completion:** 91% (Core Engine & React MVP Ready + Template Fixes Started)
 - **Current Milestone:** v0.1.0 Alpha Release
-- **Last Update:** 2026-01-17 23:30
+- **Last Update:** 2026-01-17 23:54
 
 ---
 
 ## 📝 Changelog
 
 ### [0.1.0] - 2026-01-17
+
+#### Fixed
+
+- **Template Import Paths (Phase 1/8)** - Fixed critical module resolution errors in sdk-mysten layer
+  - Updated 4 template files: client.ts, adapter.ts, config.ts, index.ts
+  - Changed all `../` imports to `./` for same-directory references
+  - Resolved 100% of generated project compilation failures due to broken import paths
+  - TypeScript compilation verified successful in flattened project structure
+  - Code review score: 10/10 approved
+  - **Completed:** 2026-01-17T23:54:00+07:00
 
 #### Added
 

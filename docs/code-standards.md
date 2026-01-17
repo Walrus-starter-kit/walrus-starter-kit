@@ -103,6 +103,7 @@ export function validateProjectName(name: string): boolean | string {
 - **Adapter Pattern:** SDK layers must implement the storage adapter interface (e.g., `StorageAdapter`) defined in the base layer.
 - **Environment Variables:** Use `VITE_` prefix (e.g., `VITE_WALRUS_NETWORK`) for variables intended for the frontend.
 - **Consistency:** Use camelCase for file names in templates unless framework conventions dictate otherwise (e.g., PascalCase for React components).
+- **Import Paths:** Use `./` for same-directory references in templates (base layer provides subdirectories, SDK layers overlay files at same level after generation).
 
 ### 4.2 React Framework Standards (templates/react/)
 
