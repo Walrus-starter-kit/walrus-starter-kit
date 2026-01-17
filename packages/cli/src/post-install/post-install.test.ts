@@ -165,7 +165,6 @@ describe('Post-Install & Validation', () => {
 
       expect(result.success).toBe(true);
       expect(result.installed).toBe(true);
-      expect(result.gitInitialized).toBe(true);
       expect(result.validated).toBe(true);
     });
 
@@ -179,13 +178,26 @@ describe('Post-Install & Validation', () => {
       expect(result.validated).toBe(false);
     });
 
-    it('should skip git when skipGit is true', async () => {
+    it('should not initialize git even if skipGit is false (deprecated)', async () => {
+      vi.mocked(spawn).mockReturnValue({
+        on: vi.fn().mockImplementation((event, cb) => {
+          if (event === 'close') cb(0);
+          return { on: vi.fn() };
+        }),
+      } as MockSpawnReturn);
+
       const result = await runPostInstall({
         context,
         projectPath,
-        skipGit: true,
+        skipGit: false,
       });
-      expect(result.gitInitialized).toBe(false);
+
+      // Should NOT have called git init
+      expect(vi.mocked(spawn)).not.toHaveBeenCalledWith(
+        'git',
+        ['init'],
+        expect.any(Object)
+      );
     });
 
     it('should skip validation when skipValidation is true', async () => {
