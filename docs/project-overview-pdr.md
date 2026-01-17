@@ -2,8 +2,8 @@
 
 **Project Name:** Walrus Starter Kit
 **CLI Tool:** `create-walrus-app`
-**Version:** 0.1.0
-**Status:** In Development (Phase 1 Complete)
+**Version:** 0.6.0
+**Status:** In Development (Phase 6/8 Complete - 75%)
 
 ## 1. Executive Summary
 
@@ -29,18 +29,18 @@ The goal is to provide the "create-next-app" experience for the Walrus ecosystem
 ### 4.1 Functional Requirements
 
 - **Interactive CLI:**
-    1. Project name selection.
-    2. SDK selection (e.g., `@mysten/walrus`).
-    3. Framework selection (e.g., React, Vue, Plain TS).
-    4. Use Case selection (e.g., Simple Upload, File Gallery, DeFi/NFT).
-    5. Optional features (Tailwind CSS, Analytics).
+  1. Project name selection.
+  2. SDK selection (e.g., `@mysten/walrus`).
+  3. Framework selection (e.g., React, Vue, Plain TS).
+  4. Use Case selection (e.g., Simple Upload, File Gallery, DeFi/NFT).
+  5. Optional features (Tailwind CSS, Analytics).
 - **Template Generation:**
-    - Deep merge `package.json` dependencies and scripts.
-    - Resolve conflicts in configuration files (tsconfig, etc.).
-    - Maintain a compatibility matrix between SDKs and frameworks.
+  - Deep merge `package.json` dependencies and scripts.
+  - Resolve conflicts in configuration files (tsconfig, etc.).
+  - Maintain a compatibility matrix between SDKs and frameworks.
 - **Post-Install Automation:**
-    - Automatic dependency installation (detecting pnpm, npm, yarn).
-    - Basic project validation after scaffolding.
+  - Automatic dependency installation (detecting pnpm, npm, yarn).
+  - Basic project validation after scaffolding.
 
 ### 4.2 Non-Functional Requirements
 

@@ -12,8 +12,9 @@ walrus-starter-kit/
 │   └── cli/                 # Scaffolder Engine (create-walrus-app)
 ├── templates/               # Modular Template Layers (Excluded from workspace)
 │   ├── base/                # Layer 1: Core config & Adapter interface
-│   ├── sdk-*/               # Layer 2: SDK-specific implementations
-│   ├── framework-*/         # Layer 3: UI Framework (React, Vue, etc.)
+│   ├── sdk-mysten/          # Layer 2: @mysten/walrus SDK implementation
+│   ├── react/               # Layer 3: React 18 + Vite framework
+│   ├── framework-*/         # Layer 3: Other UI Frameworks (Vue, Plain TS)
 │   └── use-case-*/          # Layer 4: Feature-specific code
 ├── examples/                # Generated test outputs (Excluded from workspace)
 └── docs/                    # Technical Documentation
@@ -178,7 +179,7 @@ export interface StorageAdapter {
 We use a **Base + Layer + Adapter Pattern** (detailed in Section 3):
 
 1.  **Base Layer:** Contains common files (`.gitignore`, `.env.example`, `tsconfig.json`) and the **Storage Adapter Interface**.
-2.  **SDK Layer:** Implements the Storage Adapter using the Mysten Labs TypeScript SDK (`@mysten/walrus`).
+2.  **SDK Layer:** Implements the Storage Adapter using the Mysten Labs TypeScript SDK (`@mysten/walrus`). See `templates/sdk-mysten/` for singleton client and adapter implementation.
 3.  **Framework Layer:** Sets up the UI environment (Vite, React, Tailwind).
 4.  **Use Case Layer:** High-level features (Gallery, Upload UI) that consume the Storage Adapter.
 
@@ -229,15 +230,182 @@ export interface StorageAdapter {
 }
 ```
 
-SDK layers (e.g., `sdk-mysten`) provide concrete implementations.
+**Implemented Adapters:**
 
-## 6. Technology Stack
+- **sdk-mysten** (`templates/sdk-mysten/src/adapter.ts`): WalrusStorageAdapter using @mysten/walrus SDK with singleton client pattern.
+
+## 6. React Framework Layer Architecture
+
+**Location:** `templates/react/`
+
+**Purpose:** Modern React 18 application with Vite, TanStack Query, and Sui wallet integration.
+
+### 6.1 Project Structure
+
+```
+templates/react/
+├── src/
+│   ├── providers/           # Context providers
+│   │   ├── QueryProvider.tsx   # TanStack Query setup
+│   │   └── WalletProvider.tsx  # Sui wallet + network config
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useStorage.ts       # Storage operations
+│   │   └── useWallet.ts        # Wallet state access
+│   ├── components/          # Reusable UI components
+│   │   ├── Layout.tsx
+│   │   └── WalletConnect.tsx
+│   ├── App.tsx              # Root component
+│   ├── main.tsx             # Entry point
+│   ├── index.css            # Global styles
+│   └── dapp-kit.css         # Wallet UI styles
+├── vite.config.ts           # Vite configuration
+├── tsconfig.json            # TypeScript config (strict mode)
+├── .eslintrc.json           # ESLint with React rules
+└── package.json             # Dependencies
+```
+
+### 6.2 Provider Composition Pattern
+
+The framework uses a layered provider pattern for dependency injection:
+
+```tsx
+// main.tsx entry point
+<QueryProvider>
+  {' '}
+  // TanStack Query (async state)
+  <WalletProvider>
+    {' '}
+    // Sui wallet + network config
+    <App />
+  </WalletProvider>
+</QueryProvider>
+```
+
+**QueryProvider:**
+
+- Configures TanStack Query client
+- Defaults: refetchOnWindowFocus=false, retry=1, staleTime=5min
+- Centralized async state management
+
+**WalletProvider:**
+
+- Wraps @mysten/dapp-kit components
+- Network config from env (testnet/mainnet)
+- Nested QueryClient for wallet-specific queries
+- Auto-connects to Sui RPC (custom or default)
+
+### 6.3 Custom Hooks API
+
+**Storage Hooks (`useStorage.ts`):**
+
+```typescript
+// Upload mutation
+const upload = useUpload();
+upload.mutate({ file: File, options?: UploadOptions });
+
+// Download query
+const { data: blob } = useDownload(blobId);
+
+// Metadata query
+const { data: metadata } = useMetadata(blobId);
+```
+
+**Wallet Hook (`useWallet.ts`):**
+
+```typescript
+const { account, isConnected, address, signAndExecute } = useWallet();
+```
+
+All hooks use TanStack Query for caching, deduplication, and error handling.
+
+### 6.4 Vite Configuration
+
+```typescript
+// vite.config.ts
+{
+  plugins: [react()],
+  server: { port: 3000, open: true },
+  build: { target: 'esnext', outDir: 'dist' },
+  resolve: { alias: { '@': '/src' } }
+}
+```
+
+**Features:**
+
+- Fast Refresh for instant HMR
+- Path alias (`@/`) for cleaner imports
+- ESNext target for modern browsers
+- Auto-open browser on `npm run dev`
+
+### 6.5 TypeScript Configuration
+
+**Strict Mode Enabled:**
+
+- `strict: true` - All strict checks
+- `noUnusedLocals`, `noUnusedParameters` - Enforce cleanup
+- `noFallthroughCasesInSwitch` - Safety checks
+- Target: ES2022 with ESNext module resolution
+- JSX: preserve (handled by Vite)
+
+### 6.6 Dependencies
+
+**Core:**
+
+- `react@^18.2.0`, `react-dom@^18.2.0`
+- `vite@^5.0.11`, `@vitejs/plugin-react@^4.2.1`
+
+**Sui Integration:**
+
+- `@mysten/dapp-kit@^0.14.0` - Wallet components
+- `@mysten/sui@^1.10.0` - Client library
+
+**State Management:**
+
+- `@tanstack/react-query@^5.17.0` - Async queries
+
+**Dev Tools:**
+
+- `typescript@^5.3.3`
+- `eslint` + React plugins
+- Type definitions for React
+
+### 6.7 Integration with Base/SDK Layers
+
+The React layer imports from base/SDK layers:
+
+```typescript
+// hooks/useStorage.ts
+import { storageAdapter } from '../index.js'; // From SDK layer
+import type { UploadOptions } from '../adapters/storage.js'; // From base layer
+
+// providers/WalletProvider.tsx
+import { loadEnv } from '../utils/env.js'; // From base layer
+```
+
+Hooks wrap `storageAdapter` methods in TanStack Query primitives:
+
+- `useUpload()` → `useMutation` → `storageAdapter.upload()`
+- `useDownload()` → `useQuery` → `storageAdapter.download()`
+- `useMetadata()` → `useQuery` → `storageAdapter.getMetadata()`
+
+## 7. Technology Stack
+
+**CLI:**
 
 - **Runtime:** Node.js (ESM)
 - **Tooling:** pnpm, TypeScript (strict mode), ESLint, Prettier
 - **CLI Libs:** `commander` (^11.1.0), `prompts` (^2.4.2), `kleur` (^4.1.5)
 - **Testing:** `vitest` (91/91 tests, 97.5% coverage)
 - **Build:** `tsc` (TypeScript Compiler)
+
+**React Framework:**
+
+- **UI Library:** React 18.2.0 (Hooks, Suspense, Concurrent)
+- **Build Tool:** Vite 5.0.11 (HMR, Fast Refresh)
+- **State Management:** TanStack Query 5.17.0
+- **Sui Integration:** @mysten/dapp-kit 0.14.0, @mysten/sui 1.10.0
+- **Language:** TypeScript 5.3.3 (strict mode, ES2022)
+- **Linting:** ESLint 8.56 + React plugins
 
 ```
 

@@ -41,14 +41,26 @@
 - [x] Base layer validation tests
       **Completed:** 2026-01-17 16:55
 
-### Phase 4: SDK Layer (PENDING)
+### Phase 4: SDK Layer (COMPLETE)
 
-- [ ] @mysten/walrus implementation
-- [ ] SDK-specific dependencies
+- [x] @mysten/walrus implementation
+- [x] SDK-specific dependencies
+- [x] Singleton WalrusClient with network configs
+- [x] WalrusStorageAdapter implementing base interface
+      **Completed:** 2026-01-17 17:15
 
-### Phase 5: Framework Layer (PENDING)
+### Phase 5: Framework Layer (COMPLETE - React)
 
-- [ ] React + Vite template
+- [x] React + Vite template
+  - [x] Provider pattern (QueryProvider, WalletProvider)
+  - [x] Custom hooks (useStorage, useWallet)
+  - [x] Component structure (Layout, WalletConnect)
+  - [x] Vite config with path aliases
+  - [x] TypeScript strict mode
+  - [x] ESLint + React plugins
+  - [x] @mysten/dapp-kit integration
+  - [x] TanStack Query setup
+        **Completed:** 2026-01-17 18:00
 - [ ] Vue + Vite template
 - [ ] Plain TypeScript template
 
@@ -77,13 +89,41 @@
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 50% (4/8 Phases)
-- **Current Milestone:** SDK Layer Implementation
-- **Last Update:** 2026-01-17 16:55
+- **Overall Completion:** 75% (6/8 Phases)
+- **Current Milestone:** Use Case Layer Implementation
+- **Last Update:** 2026-01-17 18:00
 
 ---
 
 ## 📝 Changelog
+
+### [0.6.0] - 2026-01-17
+
+#### Completed
+
+- **Phase 5: React Framework Layer** - Modern React 18 + Vite application template
+  - React 18.2.0 with Hooks, Suspense, and Concurrent features
+  - Vite 5.0.11 for fast HMR and builds
+  - Provider pattern composition (QueryProvider → WalletProvider → App)
+  - Custom hooks: useUpload, useDownload, useMetadata, useWallet
+  - TanStack Query 5.17 for async state management
+  - @mysten/dapp-kit 0.14 for Sui wallet integration
+  - Reusable components: Layout, WalletConnect
+  - TypeScript strict mode with ES2022 target
+  - Vite config: port 3000, @ path alias, esnext target
+  - ESLint with React and React Hooks plugins
+  - Integration with base/SDK layers via storageAdapter
+
+### [0.5.0] - 2026-01-17
+
+#### Completed
+
+- **Phase 4: SDK Layer (@mysten/walrus)** - Concrete StorageAdapter implementation
+  - Singleton WalrusClient with testnet/devnet network configs
+  - WalrusStorageAdapter implementing base StorageAdapter interface
+  - Network switching support (getClient, switchNetwork)
+  - SDK-specific type extensions and exports
+  - Adapter validation test suite
 
 ### [0.4.0] - 2026-01-17
 

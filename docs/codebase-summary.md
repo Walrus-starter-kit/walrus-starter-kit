@@ -29,6 +29,7 @@ The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`)
   - `tsconfig.json`: CLI-specific TypeScript config.
 - `/templates`: (In Progress) Modular layers for project generation.
   - `base/`: Common configs and interfaces.
+  - `sdk-mysten/`: @mysten/walrus SDK adapter implementation.
 - `/docs`: Project documentation and design guidelines.
 - `/plans`: Implementation phases and research reports.
 - `/examples`: (Future) Target for generated test outputs.
@@ -79,7 +80,72 @@ Storage operations abstracted via interface, SDK layers implement concrete adapt
 - Single source of truth for types/config
 - SDK layers merge and extend base
 
-## 5. Current Progress
+## 5. SDK Layer (@mysten/walrus)
+
+**Structure:**
+
+- `src/config.ts` - Network configs (testnet/devnet), singleton WalrusClient instance
+- `src/types.ts` - SDK-specific type extensions
+- `src/client.ts` - Singleton client with network switching
+- `src/adapter.ts` - WalrusStorageAdapter implementing StorageAdapter interface
+- `src/index.ts` - Public exports
+- `test/adapter.test.ts` - Adapter validation tests
+
+**Key Features:**
+
+- Singleton client pattern prevents multiple SDK instances
+- Network configuration with testnet/devnet presets
+- Implements base StorageAdapter (upload/download/delete/getInfo)
+- Extends base types with SDK-specific metadata
+
+## 6. React Framework Layer
+
+**Location:** `templates/react/`
+
+**Purpose:** Modern React 18 application with Vite build system and Sui wallet integration.
+
+**Key Files:**
+
+| File                               | Purpose                                             |
+| ---------------------------------- | --------------------------------------------------- |
+| `src/main.tsx`                     | Entry point with provider composition               |
+| `src/App.tsx`                      | Root component                                      |
+| `src/providers/QueryProvider.tsx`  | TanStack Query setup (5min staleTime, retry=1)      |
+| `src/providers/WalletProvider.tsx` | Sui wallet + network config (@mysten/dapp-kit)      |
+| `src/hooks/useStorage.ts`          | Storage hooks (useUpload, useDownload, useMetadata) |
+| `src/hooks/useWallet.ts`           | Wallet state access wrapper                         |
+| `src/components/Layout.tsx`        | App layout structure                                |
+| `src/components/WalletConnect.tsx` | Wallet connection UI                                |
+| `vite.config.ts`                   | Vite config (port 3000, @ alias, esnext)            |
+| `tsconfig.json`                    | Strict TS config (ES2022, JSX preserve)             |
+
+**Provider Pattern:**
+
+```tsx
+<QueryProvider>
+  <WalletProvider>
+    <App />
+  </WalletProvider>
+</QueryProvider>
+```
+
+**Custom Hooks:**
+
+- `useUpload()` - Mutation hook for file uploads using storageAdapter
+- `useDownload(blobId)` - Query hook for blob downloads
+- `useMetadata(blobId)` - Query hook for blob metadata
+- `useWallet()` - Access account, isConnected, address, signAndExecute
+
+**Tech Stack:**
+
+- React 18.2.0 (Hooks, Suspense)
+- Vite 5.0.11 (HMR, fast builds)
+- TanStack Query 5.17.0 (async state)
+- @mysten/dapp-kit 0.14.0 (Sui wallet)
+- TypeScript 5.3.3 (strict mode)
+- ESLint + React plugins
+
+## 7. Current Progress
 
 - ✅ Monorepo structure established.
 - ✅ Root dependencies and scripts configured.
@@ -91,17 +157,31 @@ Storage operations abstracted via interface, SDK layers implement concrete adapt
 - ✅ Template Generation Engine core implemented (Phase 7).
 - ✅ Atomic generation with rollback on failure or interrupt.
 - ✅ Template base layer with adapter pattern (Phase 3).
-- 🏗️ SDK-specific layers (Phase 4-6) are next.
+- ✅ SDK layer (@mysten/walrus) with singleton client and StorageAdapter (Phase 4).
+- ✅ React framework layer with provider pattern and custom hooks (Phase 5).
+- 🏗️ Use-case layers (Phase 6) are next.
 
-## 6. Technology Stack
+## 8. Technology Stack
 
-- **Language:** TypeScript (strict mode, ESM)
-- **Package Manager:** pnpm
-- **CLI Libraries:** commander (^11.1.0), prompts (^2.4.2), kleur (^4.1.5), fs-extra (^11.2.0)
-- **Tooling:** sort-package-json (^2.10.0)
-- **Testing:** vitest (91/91 tests, 97.5% coverage)
-- **Frameworks (Target):** React, Vue, Plain TypeScript
-- **SDKs (Supported):** mysten (@mysten/walrus), tusky (@tusky-io/ts-sdk), hibernuts (@hibernuts/walrus-sdk)
+**CLI:**
+
+- TypeScript (strict mode, ESM)
+- pnpm (workspace manager)
+- commander (^11.1.0), prompts (^2.4.2), kleur (^4.1.5), fs-extra (^11.2.0)
+- sort-package-json (^2.10.0)
+- vitest (91/91 tests, 97.5% coverage)
+
+**Templates:**
+
+- **React:** React 18.2, Vite 5.0, TanStack Query 5.17, @mysten/dapp-kit 0.14
+- **Vue:** (Planned)
+- **Plain TS:** (Planned)
+
+**SDKs Supported:**
+
+- mysten (@mysten/walrus) - Testnet stable
+- tusky (@tusky-io/ts-sdk) - Community
+- hibernuts (@hibernuts/walrus-sdk) - Alternative
 
 ```
 

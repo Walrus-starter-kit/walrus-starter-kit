@@ -34,11 +34,13 @@ This document outlines the coding standards and structural conventions for the W
 - **Error Sanitization:** Sanitize error messages before displaying to users.
 
 Example:
+
 ```typescript
 try {
   // operation
 } catch (error) {
-  const message = error instanceof Error ? error.message : 'Unknown error occurred';
+  const message =
+    error instanceof Error ? error.message : 'Unknown error occurred';
   logger.error(`Failed: ${message}`);
   process.exit(1);
 }
@@ -58,6 +60,7 @@ try {
 - **Length Limits:** Enforce 214-character limit for project names (npm package limit).
 
 Example validation:
+
 ```typescript
 export function validateProjectName(name: string): boolean | string {
   if (!name || name.trim().length === 0) {
@@ -84,21 +87,87 @@ export function validateProjectName(name: string): boolean | string {
 
 ## 4. Template Standards (templates/)
 
+### 4.1 General Template Guidelines
+
 - **Modular package.json:** Template layers should only contain the dependencies specific to that layer.
 - **Adapter Pattern:** SDK layers must implement the storage adapter interface (e.g., `StorageAdapter`) defined in the base layer.
 - **Environment Variables:** Use `VITE_` prefix (e.g., `VITE_WALRUS_NETWORK`) for variables intended for the frontend.
 - **Consistency:** Use camelCase for file names in templates unless framework conventions dictate otherwise (e.g., PascalCase for React components).
+
+### 4.2 React Framework Standards (templates/react/)
+
+**File Structure:**
+
+- `src/providers/` - Context providers (QueryProvider, WalletProvider)
+- `src/hooks/` - Custom React hooks (useStorage, useWallet)
+- `src/components/` - Reusable UI components (Layout, WalletConnect)
+- `src/App.tsx` - Root component
+- `src/main.tsx` - Entry point with provider composition
+
+**Component Guidelines:**
+
+- Use functional components exclusively
+- Prefer TypeScript interfaces for prop types
+- Export components as named exports (not default)
+- Place types/interfaces above the component definition
+
+**Hook Patterns:**
+
+- Wrap storage adapter methods with TanStack Query hooks
+- Use `useMutation` for write operations (upload, delete)
+- Use `useQuery` for read operations (download, getMetadata)
+- Enable queries conditionally when required params are present
+
+**Provider Composition:**
+
+```tsx
+<QueryProvider>
+  {' '}
+  // TanStack Query
+  <WalletProvider>
+    {' '}
+    // Sui wallet + network
+    <App />
+  </WalletProvider>
+</QueryProvider>
+```
+
+**TypeScript Configuration:**
+
+- Enable strict mode: `"strict": true`
+- Target ES2022 or later
+- JSX preservation for Vite processing
+- Enable `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`
+
+**Vite Configuration:**
+
+- Default port: 3000
+- Path alias: `@` → `/src`
+- Build target: `esnext`
+- Enable auto-open in dev mode
+
+**Dependencies:**
+
+- Pin major versions for stability
+- React 18.2+ (Hooks, Suspense)
+- Vite 5.0+ (fast HMR)
+- TanStack Query 5.17+ (async state)
+- @mysten/dapp-kit 0.14+ (Sui wallet)
+- TypeScript 5.3+ (strict mode)
 
 ## 5. Formatting & Linting
 
 - **Prettier:** Standard configuration enforced via `.prettierrc.json`.
 - **ESLint:** Strict rules for TypeScript, enforced via `.eslintrc.json`.
 - **Scripts:**
-    - `pnpm lint`: Run ESLint across the workspace.
-    - `pnpm format`: Run Prettier to fix formatting.
+  - `pnpm lint`: Run ESLint across the workspace.
+  - `pnpm format`: Run Prettier to fix formatting.
 
 ## 6. Versioning
 
 - Follow [Semantic Versioning (SemVer)](https://semver.org/).
 - Pin critical dependencies in templates to ensure stability (e.g., `"@mysten/walrus": "1.0.0"`).
+
+```
+
 ```

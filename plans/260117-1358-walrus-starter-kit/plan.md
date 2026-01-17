@@ -60,7 +60,7 @@ Walrus client, upload/download adapters, type definitions
 
 ### Phase 5: Framework Layer (React+Vite) ⏱️ 6h
 
-**Status:** pending | **Priority:** High  
+**Status:** completed | **Completed:** 2026-01-17 16:55 | **Priority:** High  
 React template, Vite config, component architecture  
 📄 [Detailed Plan](./phase-05-framework-layer.md)
 
