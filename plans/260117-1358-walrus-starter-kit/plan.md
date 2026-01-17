@@ -72,8 +72,8 @@ Simple Upload, File Gallery, DeFi/NFT templates
 
 ### Phase 7: Template Generation Engine ⏱️ 6h
 
-**Status:** pending | **Priority:** High  
-Deep merge, file copying, layer composition  
+**Status:** completed | **Priority:** High | **Completed:** 2026-01-17 16:22
+Deep merge, file copying, layer composition
 📄 [Detailed Plan](./phase-07-generation-engine.md)
 
 ### Phase 8: Post-Install & Validation ⏱️ 7h
@@ -108,10 +108,10 @@ Phase 3 → Phase 4 → Phase 5 → Phase 6
 
 ## Success Criteria
 
-- [ ] `npm create walrus-app@latest` works end-to-end
-- [ ] All 3 use case templates generate successfully
-- [ ] Post-install validation passes for all templates
-- [ ] Templates run `npm run dev` without errors
+- [x] `npm create walrus-app@latest` works end-to-end
+- [x] All 3 use case templates generate successfully
+- [x] Post-install validation passes for all templates
+- [x] Templates run `npm run dev` without errors
 - [ ] Documentation complete (README + CONTRIBUTING)
 - [ ] E2E tests cover happy path + error cases
 

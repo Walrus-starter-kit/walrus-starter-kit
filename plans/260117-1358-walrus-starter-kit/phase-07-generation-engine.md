@@ -12,7 +12,8 @@
 
 **Created:** 2026-01-17  
 **Priority:** High  
-**Status:** pending  
+**Status:** completed
+**Completed:** 2026-01-17 16:22
 **Estimated Effort:** 6 hours  
 **Dependencies:** Phase 2-6 complete
 
@@ -628,29 +629,29 @@ test().catch(console.error);
 
 ## Todo List
 
-- [ ] Create `generator/types.ts` with interfaces
-- [ ] Create `generator/layers.ts` with resolution logic
-- [ ] Create `generator/file-ops.ts` with copy functions
-- [ ] Create `generator/merge.ts` with deep merge
-- [ ] Create `generator/transform.ts` with variable substitution
-- [ ] Create `generator/index.ts` with main generator
-- [ ] Update `src/index.ts` to call generator
-- [ ] Add `sort-package-json` dependency
-- [ ] Create test script
-- [ ] Test generation with all combinations
-- [ ] Test dry-run mode
-- [ ] Test error rollback
+- [x] Create `generator/types.ts` with interfaces
+- [x] Create `generator/layers.ts` with resolution logic
+- [x] Create `generator/file-ops.ts` with copy functions
+- [x] Create `generator/merge.ts` with deep merge
+- [x] Create `generator/transform.ts` with variable substitution
+- [x] Create `generator/index.ts` with main generator
+- [x] Update `src/index.ts` to call generator
+- [x] Add `sort-package-json` dependency
+- [x] Create test script
+- [x] Test generation with all combinations
+- [x] Test dry-run mode
+- [x] Test error rollback
 
 ## Success Criteria
 
 ### Functional Tests
 
-- [ ] Base + SDK + Framework + UseCase layers combine correctly
-- [ ] package.json merges all dependencies
-- [ ] Variables transform in README/package.json
-- [ ] Later layers override earlier files
-- [ ] Empty directory check works
-- [ ] Rollback works on error
+- [x] Base + SDK + Framework + UseCase layers combine correctly
+- [x] package.json merges all dependencies
+- [x] Variables transform in README/package.json
+- [x] Later layers override earlier files
+- [x] Empty directory check works
+- [x] Rollback works on error
 
 ### Integration Tests
 

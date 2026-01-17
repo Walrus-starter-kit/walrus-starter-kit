@@ -47,10 +47,13 @@
 - [ ] File Gallery implementation
 - [ ] DeFi/NFT Metadata implementation
 
-### Phase 7: Template Generation Engine (PENDING)
-- [ ] Deep JSON merge logic
-- [ ] File composition system
-- [ ] Path resolution and copying
+### Phase 7: Template Generation Engine (COMPLETE)
+- [x] Deep JSON merge logic
+- [x] File composition system
+- [x] Path resolution and copying
+- [x] Atomic generation (rollback on error)
+- [x] Path traversal & security hardening
+**Completed:** 2026-01-17 16:22
 
 ### Phase 8: Post-Install & Validation (PENDING)
 - [ ] Package manager detection
@@ -60,13 +63,24 @@
 ---
 
 ## 📈 Progress Summary
-- **Overall Completion:** 25% (2/8 Phases)
+- **Overall Completion:** 37% (3/8 Phases)
 - **Current Milestone:** Template Base Layer
-- **Last Update:** 2026-01-17 15:59
+- **Last Update:** 2026-01-17 16:30
 
 ---
 
 ## 📝 Changelog
+
+### [0.3.0] - 2026-01-17
+#### Completed
+- **Phase 7: Template Generation Engine** - Atomic layered project generation
+  - Template layer resolution (Base + SDK + Framework + Use Case + Add-ons)
+  - Deep `package.json` merging with automated sorting
+  - Path traversal security validation for template sources
+  - Mustache-style variable transformation in template files
+  - Atomic generation with full directory rollback on errors
+  - Graceful interrupt (SIGINT) cleanup support
+  - Extended test suite: 91/91 tests passing (97.5% coverage)
 
 ### [0.2.0] - 2026-01-17
 #### Completed

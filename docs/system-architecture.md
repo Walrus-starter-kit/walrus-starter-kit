@@ -36,9 +36,9 @@ Build Context (context.ts) — Merge args + prompts
     ↓
 Validate Compatibility (validator.ts) — Matrix check
     ↓
-[Template Generation] (Phase 7 - future)
+Generate Project (generator/index.ts) — Layered composition
     ↓
-Post-Install & Verification
+Post-Install & Verification (Phase 8 - future)
 ```
 
 ### 2.2 Core Responsibilities
@@ -47,17 +47,23 @@ Post-Install & Verification
 - **Validation:** Checking the compatibility matrix (SDK vs Framework vs Use Case).
 - **Context Building:** Merging CLI arguments and prompt results with runtime type validation.
 - **Package Manager Detection:** Auto-detecting pnpm/yarn/bun/npm from environment.
-- **Composition:** (Phase 7) Assembling the final project by merging template layers.
-- **Deep Merging:** (Phase 7) Intelligent merging of `package.json` and JSON configs.
-- **Post-Install:** (Phase 7) Handling package installation and initial sanity checks.
+- **Layered Composition:** Assembling the final project by merging multiple template layers (Base + SDK + Framework + Use Case).
+- **Intelligent Merging:** Deep merging of `package.json` dependencies and scripts with automated sorting.
+- **Template Transformation:** Variable replacement within template files using mustache-style syntax (`{{projectName}}`).
+- **Atomic Operations:** Rollback support for partially generated directories on failure or SIGINT.
+- **Path Security:** Path traversal validation to ensure all template layers are within the package root.
 
 ### 2.3 Key Components
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| Entry Point | `index.ts` | Commander setup, orchestration, error handling |
+| Entry Point | `index.ts` | Commander setup, orchestration, SIGINT handling |
 | Interactive Wizard | `prompts.ts` | 6-step prompts with dynamic choices |
 | Context Builder | `context.ts` | Merge args/prompts, runtime validation |
+| Generator Engine | `generator/index.ts` | Orchestrates the layered generation flow |
+| Layer Resolver | `generator/layers.ts` | Determines and validates active template layers |
+| JSON Merger | `generator/merge.ts` | Merges package.json with dependency reconciliation |
+| Transformer | `generator/transform.ts` | Variable replacement in template files |
 | Validator | `validator.ts` | Compatibility checks, project name validation |
 | Matrix | `matrix.ts` | SDK/framework/use-case compatibility data |
 | Types | `types.ts` | TypeScript interfaces (Context, ValidationResult) |

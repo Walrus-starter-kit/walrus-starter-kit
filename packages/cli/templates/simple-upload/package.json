@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "upload": "node upload.js"
+  }
+}

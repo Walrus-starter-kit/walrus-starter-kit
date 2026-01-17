@@ -5,15 +5,20 @@ import { runPrompts } from './prompts.js';
 import { buildContext } from './context.js';
 import { validateContext } from './validator.js';
 import { logger } from './utils/logger.js';
+import { generateProject } from './generator/index.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import fs from 'fs-extra';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const packageJson = JSON.parse(
   readFileSync(join(__dirname, '../package.json'), 'utf-8')
 );
+
+// Track current generation path for cleanup on interrupt
+let currentGenerationPath: string | null = null;
 
 program
   .name('create-walrus-app')
@@ -57,8 +62,32 @@ program
       logger.success('✓ Configuration valid!');
       console.log('\nContext:', context);
 
-      // TODO: Phase 7 - Generate template
-      logger.info('🏗️  Template generation coming in Phase 7!');
+      // Track generation path for cleanup on interrupt
+      currentGenerationPath = context.projectPath;
+
+      // Generate project
+      logger.info('\n🏗️  Generating your Walrus application...\n');
+
+      const result = await generateProject({
+        context,
+        templateDir: join(__dirname, '../templates'),
+        targetDir: context.projectPath,
+      });
+
+      // Clear tracking after completion
+      currentGenerationPath = null;
+
+      if (!result.success) {
+        logger.error('❌ Project generation failed');
+        process.exit(1);
+      }
+
+      // Success message
+      logger.success('\n✨ Project created successfully!\n');
+      logger.info('Next steps:');
+      logger.info(`  cd ${context.projectName}`);
+      logger.info(`  ${context.packageManager} install`);
+      logger.info(`  ${context.packageManager} run dev`);
     } catch (error) {
       // Sanitize error messages - don't expose stack traces to users
       const message = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -68,9 +97,21 @@ program
   });
 
 // Handle cleanup on abort
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   logger.warn('\n\nOperation cancelled by user.');
-  // TODO: Clean up partial state
+
+  // Clean up partial generation if in progress
+  if (currentGenerationPath) {
+    logger.info(`🧹 Cleaning up partial generation: ${currentGenerationPath}`);
+    try {
+      await fs.remove(currentGenerationPath);
+      logger.success('✓ Cleanup completed');
+    } catch (error) {
+      logger.error(`Failed to cleanup: ${error}`);
+      logger.warn(`⚠️  Please manually delete: ${currentGenerationPath}`);
+    }
+  }
+
   process.exit(0);
 });
 

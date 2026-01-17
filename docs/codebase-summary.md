@@ -2,15 +2,22 @@
 
 **Project:** Walrus Starter Kit
 **Generated:** 2026-01-17
-**Status:** Phase 2 (CLI Engine Core) Complete
+**Status:** Phase 7 (Template Generation Engine) Complete
 
 ## 1. Overview
-The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`) and modular templates for building Walrus applications on Sui. It uses a layered template system to allow mixing and matching SDKs, frameworks, and use cases.
+The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`) and modular templates for building Walrus applications on Sui. It uses a layered template system to allow mixing and matching SDKs, frameworks, and use cases. The CLI features a sophisticated generation engine that merges multiple template layers with atomic rollback support.
 
 ## 2. Directory Structure
 
-- `/packages/cli`: The core CLI engine with interactive prompts and validation.
-    - `src/index.ts`: Entry point with commander setup.
+- `/packages/cli`: The core CLI engine with interactive prompts, validation, and project generation.
+    - `src/index.ts`: Entry point with commander setup and interrupt handling.
+    - `src/generator/`: Template generation engine core.
+        - `index.ts`: Orchestrates the generation process (copying, merging, transforming).
+        - `layers.ts`: Resolves and validates template layers based on context.
+        - `merge.ts`: Intelligent merging of `package.json` using `sort-package-json`.
+        - `transform.ts`: Variable replacement in template files (e.g., `{{projectName}}`).
+        - `file-ops.ts`: Low-level file system operations with safety checks.
+        - `types.ts`: Generator-specific type definitions.
     - `src/prompts.ts`: Interactive 6-step wizard.
     - `src/validator.ts`: Compatibility validation logic.
     - `src/context.ts`: Context builder for user configuration.
@@ -50,13 +57,16 @@ Interactive scaffolder with hybrid mode (interactive/CI-CD):
 - ✅ CLI interactive prompts and validation implemented (Phase 2).
 - ✅ Compatibility matrix for SDK/framework/use-case combinations.
 - ✅ Context building with argument merging and package manager detection.
-- 🏗️ Template base layer (Phase 3) is next.
+- ✅ Template Generation Engine core implemented (Phase 7).
+- ✅ Atomic generation with rollback on failure or interrupt.
+- 🏗️ Template base layer (Phase 3) and specific layers (Phase 4-6) are next.
 
 ## 5. Technology Stack
 - **Language:** TypeScript (strict mode, ESM)
 - **Package Manager:** pnpm
-- **CLI Libraries:** commander (^11.1.0), prompts (^2.4.2), kleur (^4.1.5)
-- **Testing:** vitest (55/55 tests, 96.42% coverage)
+- **CLI Libraries:** commander (^11.1.0), prompts (^2.4.2), kleur (^4.1.5), fs-extra (^11.2.0)
+- **Tooling:** sort-package-json (^2.10.0)
+- **Testing:** vitest (91/91 tests, 97.5% coverage)
 - **Frameworks (Target):** React, Vue, Plain TypeScript
 - **SDKs (Supported):** mysten (@mysten/walrus), tusky (@tusky-io/ts-sdk), hibernuts (@hibernuts/walrus-sdk)
 ```
