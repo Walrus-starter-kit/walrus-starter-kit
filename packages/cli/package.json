@@ -3,6 +3,7 @@
   "version": "0.1.5",
   "description": "Interactive CLI for scaffolding Walrus applications",
   "type": "module",
+  "packageManager": "pnpm@9.15.4",
   "bin": {
     "create-walrus-app": "./dist/index.js"
   },

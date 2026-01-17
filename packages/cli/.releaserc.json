@@ -8,7 +8,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node -e \"const pkg=require('./package.json');pkg.version='${nextRelease.version}';require('fs').writeFileSync('./package.json',JSON.stringify(pkg,null,2)+'\\n')\""
+        "prepareCmd": "pnpm version ${nextRelease.version} --no-git-tag-version --allow-same-version"
       }
     ],
     [
@@ -16,8 +16,7 @@
       {
         "npmPublish": true,
         "pkgRoot": ".",
-        "tarballDir": "dist",
-        "provenance": true
+        "tarballDir": "dist"
       }
     ],
     [
