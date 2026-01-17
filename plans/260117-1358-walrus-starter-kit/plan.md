@@ -1,7 +1,7 @@
 ---
 title: 'Walrus Starter Kit Implementation'
 description: 'Production-ready interactive CLI scaffolder for Walrus applications'
-status: in-progress
+status: completed
 priority: P1
 effort: 48h
 branch: main
@@ -66,7 +66,7 @@ React template, Vite config, component architecture
 
 ### Phase 6: Use Case Layers ⏱️ 8h
 
-**Status:** pending | **Priority:** High  
+**Status:** completed | **Completed:** 2026-01-17 18:16 | **Priority:** High  
 Simple Upload, File Gallery, DeFi/NFT templates  
 📄 [Detailed Plan](./phase-06-use-case-layers.md)
 
@@ -78,7 +78,7 @@ Deep merge, file copying, layer composition
 
 ### Phase 8: Post-Install & Validation ⏱️ 7h
 
-**Status:** pending | **Priority:** Medium  
+**Status:** completed | **Completed:** 2026-01-17 18:55 | **Priority:** Medium  
 Package manager detection, dependency install, validation  
 📄 [Detailed Plan](./phase-08-post-install.md)
 

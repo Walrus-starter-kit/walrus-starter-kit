@@ -25,6 +25,7 @@ This document outlines the coding standards and structural conventions for the W
 - **Hybrid Mode:** Support both interactive mode (no flags) and CI/CD mode (all flags provided).
 - **Terminal Output:** Use `kleur` for colored console messages (lightweight, zero dependencies).
 - **File Operations:** Use `fs-extra` for cross-platform filesystem operations.
+- **Subprocesses:** Use `cross-spawn` for running external commands (npm, git) to ensure compatibility across platforms (Windows/Linux/macOS).
 
 ### 3.2 Error Handling
 
@@ -84,6 +85,15 @@ export function validateProjectName(name: string): boolean | string {
   return true;
 }
 ```
+
+### 3.5 Post-Install Process
+
+- **Orchestration:** Use a dedicated orchestrator (`runPostInstall`) to manage the sequence of post-generation tasks.
+- **Dependency Installation:** Auto-detect the user's preferred package manager (pnpm, npm, yarn, bun) and run `install`.
+- **Git Initialization:** Initialize a git repository and create an initial commit if git is available on the system.
+- **Validation:** Run automated checks after generation, including `package.json` integrity and TypeScript compilation via `npx tsc --noEmit`.
+- **Skip Flags:** Always provide flags (e.g., `--skip-install`, `--skip-git`, `--skip-validation`) to allow users to opt-out of automatic tasks.
+- **Silent Failures:** Post-install warnings (like git failure) should not exit the process with an error code if the project was successfully generated.
 
 ## 4. Template Standards (templates/)
 

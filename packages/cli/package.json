@@ -20,6 +20,8 @@
     "test:integration": "node tests/integration/integration.test.mjs",
     "test:validation": "node tests/integration/validation.test.mjs",
     "test:manual": "node tests/integration/manual.test.js",
+    "test:e2e": "node tests/integration/cli.e2e.test.mjs",
+    "test:all": "vitest run && pnpm test:e2e",
     "prepublishOnly": "pnpm build"
   },
   "keywords": [
@@ -33,17 +35,21 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^11.1.0",
+    "cross-spawn": "^7.0.3",
     "fs-extra": "^11.2.0",
     "kleur": "^4.1.5",
     "prompts": "^2.4.2",
     "sort-package-json": "^2.10.1"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.11.0",
     "@types/prompts": "^2.4.9",
     "@vitest/coverage-v8": "^4.0.17",
     "@vitest/ui": "^4.0.17",
+    "execa": "^9.5.2",
+    "strip-ansi": "^7.1.0",
     "typescript": "^5.3.0",
     "vitest": "^4.0.17"
   }

@@ -2,10 +2,10 @@
 
 ## Project Overview
 
-**Target:** `npm create walrus-app@latest` - Production-ready CLI scaffolder
+**Target:** `npm create walrus-app@latest` - Production-ready CLI scaffolder (v1.0.0)
 **Architecture:** Monorepo + Base/Layer + Adapter Pattern
 **Timeline:** 8 days (Jan 18-25, 2026)
-**MVP Scope:** 1 SDK × 1 Framework × 3 Use Cases
+**MVP Scope:** 1 SDK × 1 Framework × 3 Use Cases - COMPLETE
 
 ---
 
@@ -64,11 +64,12 @@
 - [ ] Vue + Vite template
 - [ ] Plain TypeScript template
 
-### Phase 6: Use Case Layers (PENDING)
+### Phase 6: Use Case Layers (COMPLETE)
 
-- [ ] Simple Upload implementation
-- [ ] File Gallery implementation
-- [ ] DeFi/NFT Metadata implementation
+- [x] Simple Upload implementation
+- [x] File Gallery implementation
+- [x] DeFi/NFT Metadata implementation
+      **Completed:** 2026-01-17 18:16
 
 ### Phase 7: Template Generation Engine (COMPLETE)
 
@@ -79,23 +80,51 @@
 - [x] Path traversal & security hardening
       **Completed:** 2026-01-17 16:22
 
-### Phase 8: Post-Install & Validation (PENDING)
+### Phase 8: Post-Install & Validation (COMPLETE)
 
-- [ ] Package manager detection
-- [ ] Dependency installation automation
-- [ ] Generated project validation
+- [x] Package manager detection
+- [x] Dependency installation automation
+- [x] Git initialization & initial commit
+- [x] Generated project validation
+- [x] Success/Error messaging system
+      **Completed:** 2026-01-17 18:55
 
 ---
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 75% (6/8 Phases)
-- **Current Milestone:** Use Case Layer Implementation
-- **Last Update:** 2026-01-17 18:00
+- **Overall Completion:** 100% (8/8 Phases)
+- **Current Milestone:** v1.0.0 Production Ready
+- **Last Update:** 2026-01-17 19:00
 
 ---
 
 ## 📝 Changelog
+
+### [1.0.0] - 2026-01-17
+
+#### Completed
+
+- **Phase 8: Post-Install & Validation** - Automated environment setup and verification
+  - Package manager detection (npm, pnpm, yarn, bun) via `npm_config_user_agent`
+  - Automated dependency installation using `cross-spawn` with streaming output
+  - Git repository initialization and "chore: initial commit" creation
+  - Multi-step validation: package.json, node_modules, dependencies, and TypeScript compilation
+  - Premium success messaging with colored output and actionable next steps
+  - Error recovery instructions with manual fix steps
+  - CLI flags: `--skip-install`, `--skip-git`, `--skip-validation`
+  - Hardened spawn execution to prevent command injection
+
+### [0.7.0] - 2026-01-17
+
+#### Completed
+
+- **Phase 6: Use Case Layers** - Standardized Walrus application patterns
+  - **Simple Upload**: Single file upload with storage proof and metadata
+  - **File Gallery**: Multi-file management with list, download, and delete
+  - **DeFi/NFT Metadata**: JSON metadata storage for on-chain assets
+  - Standardized `useStorage` hooks across all use cases
+  - Responsive Tailwind CSS layouts for all templates
 
 ### [0.6.0] - 2026-01-17
 
@@ -176,3 +205,8 @@
 - `packages/cli` package skeleton with build system
 - Project implementation plans and PRD documentation
 - Project roadmap and changelog tracking
+
+Future phase:
+Tích hợp Walrus Sites deploy (tự động build & publish static frontend lên Walrus).
+Seal integration cho private blobs (access control).
+zkLogin flow trong template (wallet connect không cần seed).

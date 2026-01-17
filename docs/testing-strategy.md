@@ -10,18 +10,19 @@ Walrus Starter Kit uses **Vitest** as the primary testing framework with compreh
 
 Tests for individual functions/classes in isolation:
 
-| File                                           | Purpose                                   | LOC      |
-| ---------------------------------------------- | ----------------------------------------- | -------- |
-| `packages/cli/src/generator/merge.test.ts`     | Template merge logic (deepMerge function) | 92       |
-| `packages/cli/src/generator/index.test.ts`     | Full generator integration with file I/O  | 171      |
-| `packages/cli/src/generator/layers.test.ts`    | Template layer resolution and priority    | 109      |
-| `packages/cli/src/generator/transform.test.ts` | Template variable transformations         | ~80      |
-| `packages/cli/src/validator.test.ts`           | Input validation (names, contexts)        | 116      |
-| `packages/cli/src/utils/detect-pm.test.ts`     | Package manager detection                 | ~60      |
-| `packages/cli/src/matrix.test.ts`              | SDK/framework compatibility matrix        | ~70      |
-| `packages/cli/src/types.test.ts`               | Type validation                           | ~50      |
-| `packages/cli/src/context.test.ts`             | Context building from args/prompts        | ~77      |
-| **Total**                                      |                                           | **~825** |
+| File                                                 | Purpose                                   | LOC       |
+| ---------------------------------------------------- | ----------------------------------------- | --------- |
+| `packages/cli/src/generator/merge.test.ts`           | Template merge logic (deepMerge function) | 92        |
+| `packages/cli/src/generator/index.test.ts`           | Full generator integration with file I/O  | 171       |
+| `packages/cli/src/generator/layers.test.ts`          | Template layer resolution and priority    | 109       |
+| `packages/cli/src/generator/transform.test.ts`       | Template variable transformations         | ~80       |
+| `packages/cli/src/validator.test.ts`                 | Input validation (names, contexts)        | 116       |
+| `packages/cli/src/utils/detect-pm.test.ts`           | Package manager detection                 | ~60       |
+| `packages/cli/src/matrix.test.ts`                    | SDK/framework compatibility matrix        | ~70       |
+| `packages/cli/src/types.test.ts`                     | Type validation                           | ~50       |
+| `packages/cli/src/context.test.ts`                   | Context building from args/prompts        | ~77       |
+| `packages/cli/src/post-install/post-install.test.ts` | Post-install & validation logic           | ~200      |
+| **Total**                                            |                                           | **~1025** |
 
 ### Integration Tests (3 files, package root)
 
@@ -39,11 +40,11 @@ End-to-end CLI behavior validation:
 | ------------------------------- | ------------------------------------------ |
 | `packages/cli/src/test-base.ts` | Base template structure validation utility |
 
-### Template Tests (1 file)
+### Post-Install Tests (1 file)
 
-| File                                        | Purpose                          |
-| ------------------------------------------- | -------------------------------- |
-| `templates/sdk-mysten/test/adapter.test.ts` | SDK adapter interface compliance |
+| File                                                 | Purpose                                        |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| `packages/cli/src/post-install/post-install.test.ts` | Unit & integration tests for post-install flow |
 
 ## Current Organization Pattern
 
@@ -67,6 +68,12 @@ walrus-starter-kit/
 │   │   ├── context.test.ts ✓
 │   │   ├── types.test.ts ✓
 │   │   ├── matrix.test.ts ✓
+│   │   ├── post-install/
+│   │   │   ├── git.ts
+│   │   │   ├── index.ts
+│   │   │   ├── package-manager.ts
+│   │   │   ├── validator.ts
+│   │   │   └── post-install.test.ts ✓ (co-located)
 │   │   └── utils/
 │   │       ├── detect-pm.ts
 │   │       └── detect-pm.test.ts ✓ (co-located)

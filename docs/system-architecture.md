@@ -36,10 +36,10 @@ Run Interactive Prompts (prompts.ts) ←→ Skip if flags provided
 Build Context (context.ts) — Merge args + prompts
     ↓
 Validate Compatibility (validator.ts) — Matrix check
-    ↓
+     ↓
 Generate Project (generator/index.ts) — Layered composition
-    ↓
-Post-Install & Verification (Phase 8 - future)
+     ↓
+Post-Install & Verification (post-install/index.ts) — PM install, Git init, Validation
 ```
 
 ### 2.2 Core Responsibilities
@@ -51,25 +51,33 @@ Post-Install & Verification (Phase 8 - future)
 - **Layered Composition:** Assembling the final project by merging multiple template layers (Base + SDK + Framework + Use Case).
 - **Intelligent Merging:** Deep merging of `package.json` dependencies and scripts with automated sorting.
 - **Template Transformation:** Variable replacement within template files using mustache-style syntax (`{{projectName}}`).
+- **Post-Install Automation:** Automatic dependency installation using `cross-spawn`.
+- **Git Initialization:** Automatic `git init` and initial commit for newly created projects.
+- **Project Verification:** Post-generation checks for `node_modules` and TypeScript compilation integrity.
 - **Atomic Operations:** Rollback support for partially generated directories on failure or SIGINT.
 - **Path Security:** Path traversal validation to ensure all template layers are within the package root.
 
 ### 2.3 Key Components
 
-| Component          | File                     | Purpose                                            |
-| ------------------ | ------------------------ | -------------------------------------------------- |
-| Entry Point        | `index.ts`               | Commander setup, orchestration, SIGINT handling    |
-| Interactive Wizard | `prompts.ts`             | 6-step prompts with dynamic choices                |
-| Context Builder    | `context.ts`             | Merge args/prompts, runtime validation             |
-| Generator Engine   | `generator/index.ts`     | Orchestrates the layered generation flow           |
-| Layer Resolver     | `generator/layers.ts`    | Determines and validates active template layers    |
-| JSON Merger        | `generator/merge.ts`     | Merges package.json with dependency reconciliation |
-| Transformer        | `generator/transform.ts` | Variable replacement in template files             |
-| Validator          | `validator.ts`           | Compatibility checks, project name validation      |
-| Matrix             | `matrix.ts`              | SDK/framework/use-case compatibility data          |
-| Types              | `types.ts`               | TypeScript interfaces (Context, ValidationResult)  |
-| Logger             | `utils/logger.ts`        | Colored console output (kleur)                     |
-| PM Detection       | `utils/detect-pm.ts`     | Package manager auto-detection                     |
+| Component          | File                              | Purpose                                            |
+| ------------------ | --------------------------------- | -------------------------------------------------- |
+| Entry Point        | `index.ts`                        | Commander setup, orchestration, SIGINT handling    |
+| Interactive Wizard | `prompts.ts`                      | 6-step prompts with dynamic choices                |
+| Context Builder    | `context.ts`                      | Merge args/prompts, runtime validation             |
+| Generator Engine   | `generator/index.ts`              | Orchestrates the layered generation flow           |
+| Layer Resolver     | `generator/layers.ts`             | Determines and validates active template layers    |
+| JSON Merger        | `generator/merge.ts`              | Merges package.json with dependency reconciliation |
+| Transformer        | `generator/transform.ts`          | Variable replacement in template files             |
+| Validator          | `validator.ts`                    | Compatibility checks, project name validation      |
+| Matrix             | `matrix.ts`                       | SDK/framework/use-case compatibility data          |
+| Types              | `types.ts`                        | TypeScript interfaces (Context, ValidationResult)  |
+| Logger             | `utils/logger.ts`                 | Colored console output (kleur)                     |
+| PM Detection       | `utils/detect-pm.ts`              | Package manager auto-detection                     |
+| Post-Install       | `post-install/index.ts`           | Orchestrates dependencies, git, and validation     |
+| Git Helper         | `post-install/git.ts`             | Git repository initialization and initial commit   |
+| PM Runner          | `post-install/package-manager.ts` | Executes package manager commands (install)        |
+| Project Validator  | `post-install/validator.ts`       | Verifies project integrity and TS compilation      |
+| UI Messages        | `post-install/messages.ts`        | Success/Error screens with next steps              |
 
 ### 2.4 Context Object
 

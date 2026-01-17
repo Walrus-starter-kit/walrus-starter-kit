@@ -2,8 +2,8 @@
 
 **Project Name:** Walrus Starter Kit
 **CLI Tool:** `create-walrus-app`
-**Version:** 0.6.0
-**Status:** In Development (Phase 6/8 Complete - 75%)
+**Version:** 1.0.0
+**Status:** Complete (Phase 8/8 Complete - 100%)
 
 ## 1. Executive Summary
 
@@ -39,8 +39,10 @@ The goal is to provide the "create-next-app" experience for the Walrus ecosystem
   - Resolve conflicts in configuration files (tsconfig, etc.).
   - Maintain a compatibility matrix between SDKs and frameworks.
 - **Post-Install Automation:**
-  - Automatic dependency installation (detecting pnpm, npm, yarn).
-  - Basic project validation after scaffolding.
+  - Automatic dependency installation (detecting pnpm, npm, yarn, bun).
+  - Git repository initialization and initial commit.
+  - Project validation (package.json, node_modules, TypeScript compilation).
+  - Clear success UI with next steps and helpful resources.
 
 ### 4.2 Non-Functional Requirements
 

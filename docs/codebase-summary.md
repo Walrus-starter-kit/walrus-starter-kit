@@ -2,7 +2,7 @@
 
 **Project:** Walrus Starter Kit
 **Generated:** 2026-01-17
-**Status:** Phase 7 (Template Generation Engine) Complete
+**Status:** Phase 8 (Post-Install & Validation) Complete - Version 1.0.0 Ready
 
 ## 1. Overview
 
@@ -19,6 +19,12 @@ The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`)
     - `transform.ts`: Variable replacement in template files (e.g., `{{projectName}}`).
     - `file-ops.ts`: Low-level file system operations with safety checks.
     - `types.ts`: Generator-specific type definitions.
+  - `src/post-install/`: Post-install automation and validation.
+    - `index.ts`: Main orchestrator for dependency install, git init, and validation.
+    - `package-manager.ts`: Package manager detection and `install` command execution.
+    - `git.ts`: Git repository initialization and initial commit logic.
+    - `validator.ts`: Project validation (package.json, node_modules, TS compilation).
+    - `messages.ts`: Success and error UI displays with next steps.
   - `src/prompts.ts`: Interactive 6-step wizard.
   - `src/validator.ts`: Compatibility validation logic.
   - `src/context.ts`: Context builder for user configuration.
@@ -27,9 +33,12 @@ The Walrus Starter Kit is a monorepo containing a CLI tool (`create-walrus-app`)
   - `src/utils/detect-pm.ts`: Package manager auto-detection.
   - `src/utils/logger.ts`: Colored console logging utilities.
   - `tsconfig.json`: CLI-specific TypeScript config.
-- `/templates`: (In Progress) Modular layers for project generation.
+- `/templates`: Modular layers for project generation.
   - `base/`: Common configs and interfaces.
   - `sdk-mysten/`: @mysten/walrus SDK adapter implementation.
+  - `react/`: React 18 framework layer with hooks and providers.
+  - `simple-upload/`: Single file upload/download use case.
+  - `gallery/`: Multi-file gallery with localStorage index.
 - `/docs`: Project documentation and design guidelines.
 - `/plans`: Implementation phases and research reports.
 - `/examples`: (Future) Target for generated test outputs.
@@ -145,7 +154,99 @@ Storage operations abstracted via interface, SDK layers implement concrete adapt
 - TypeScript 5.3.3 (strict mode)
 - ESLint + React plugins
 
-## 7. Current Progress
+**SDK Adapter Export:**
+
+`templates/react/src/index.ts` re-exports `storageAdapter` from SDK layer for use by use-case templates. Use cases import via `../../react/src/index.js`.
+
+## 7. Use Case Layers
+
+Two complete demo templates built on React + SDK layers.
+
+### Simple Upload (`templates/simple-upload/`)
+
+**Purpose:** Minimal file upload/download demo showing basic Walrus operations.
+
+**Key Components:**
+
+| Component         | Purpose                                |
+| ----------------- | -------------------------------------- |
+| `UploadForm.tsx`  | File picker + upload UI with progress  |
+| `FilePreview.tsx` | Blob ID input + download trigger       |
+| `App.tsx`         | Layout composition (upload + download) |
+| `styles.css`      | Simple upload-specific styles          |
+
+**Features:**
+
+- Single file upload to Walrus (1 epoch default)
+- Blob ID display on success
+- Download by manually entering Blob ID
+- File size preview
+- Loading/error states
+
+**User Flow:**
+
+1. Select file → upload → get Blob ID
+2. Paste Blob ID → download file
+
+**Dependencies:** Reuses `useUpload()` hook from React layer, Layout component.
+
+### Gallery (`templates/gallery/`)
+
+**Purpose:** Multi-file management with persistent index (localStorage).
+
+**Key Files:**
+
+| File                         | Purpose                                    |
+| ---------------------------- | ------------------------------------------ |
+| `types/gallery.ts`           | GalleryItem, GalleryIndex interfaces       |
+| `utils/index-manager.ts`     | localStorage CRUD (load/save/add/remove)   |
+| `components/GalleryGrid.tsx` | Grid layout, loads index on mount          |
+| `components/FileCard.tsx`    | Individual file display with delete button |
+| `components/UploadModal.tsx` | Upload UI, adds to index on success        |
+| `App.tsx`                    | Layout + refresh key for grid updates      |
+| `styles.css`                 | Gallery-specific grid and card styles      |
+
+**Index Structure:**
+
+```json
+{
+  "version": "1.0",
+  "items": [
+    {
+      "blobId": "abc123...",
+      "name": "photo.jpg",
+      "size": 102400,
+      "contentType": "image/jpeg",
+      "uploadedAt": 1705449600000
+    }
+  ],
+  "lastModified": 1705449600000
+}
+```
+
+**Features:**
+
+- Upload multiple files (one at a time)
+- Grid display of all uploaded files
+- Delete files from gallery (updates index)
+- Metadata display (name, size, type, upload date)
+- Persistent index across sessions
+
+**State Management:**
+
+- Index stored in localStorage with key `gallery-index`
+- Grid refreshes via `refreshKey` increment after upload/delete
+- Error handling for corrupted index (resets to empty)
+
+**User Flow:**
+
+1. Click upload → select file → file added to grid
+2. View all files in grid with metadata
+3. Click delete → file removed from grid and index
+
+**Dependencies:** Reuses `useUpload()` hook, Layout component from React layer.
+
+## 8. Current Progress
 
 - ✅ Monorepo structure established.
 - ✅ Root dependencies and scripts configured.
@@ -159,15 +260,20 @@ Storage operations abstracted via interface, SDK layers implement concrete adapt
 - ✅ Template base layer with adapter pattern (Phase 3).
 - ✅ SDK layer (@mysten/walrus) with singleton client and StorageAdapter (Phase 4).
 - ✅ React framework layer with provider pattern and custom hooks (Phase 5).
-- 🏗️ Use-case layers (Phase 6) are next.
+- ✅ Use-case layers: simple-upload and gallery templates (Phase 6).
+- ✅ Post-install automation: Dependency installation and git initialization (Phase 8).
+- ✅ Project validation: Verification of dependencies and TypeScript compilation (Phase 8).
+- ✅ Success/Error UI with clear next steps and recovery instructions (Phase 8).
+- ✅ Integration tests for the complete scaffolding pipeline (Phase 8).
 
-## 8. Technology Stack
+## 9. Technology Stack
 
 **CLI:**
 
 - TypeScript (strict mode, ESM)
 - pnpm (workspace manager)
 - commander (^11.1.0), prompts (^2.4.2), kleur (^4.1.5), fs-extra (^11.2.0)
+- cross-spawn (^7.0.3) - For running external commands (npm, git)
 - sort-package-json (^2.10.0)
 - vitest (91/91 tests, 97.5% coverage)
 

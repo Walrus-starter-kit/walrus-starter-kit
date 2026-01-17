@@ -1,5 +1,6 @@
 {
-  "scripts": {
-    "upload": "node upload.js"
-  }
+  "name": "{{projectName}}",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {}
 }

@@ -6,6 +6,7 @@ import { buildContext } from './context.js';
 import { validateContext } from './validator.js';
 import { logger } from './utils/logger.js';
 import { generateProject } from './generator/index.js';
+import { runPostInstall } from './post-install/index.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -33,6 +34,9 @@ program
   )
   .option('--analytics', 'Include Blockberry analytics', false)
   .option('--no-tailwind', 'Exclude Tailwind CSS')
+  .option('--skip-install', 'Skip dependency installation', false)
+  .option('--skip-git', 'Skip git initialization', false)
+  .option('--skip-validation', 'Skip project validation', false)
   .action(async (projectNameArg, options) => {
     try {
       logger.info('🚀 Welcome to Walrus Starter Kit!');
@@ -82,15 +86,22 @@ program
         process.exit(1);
       }
 
-      // Success message
-      logger.success('\n✨ Project created successfully!\n');
-      logger.info('Next steps:');
-      logger.info(`  cd ${context.projectName}`);
-      logger.info(`  ${context.packageManager} install`);
-      logger.info(`  ${context.packageManager} run dev`);
+      // Post-install tasks
+      const postInstallResult = await runPostInstall({
+        context,
+        projectPath: context.projectPath,
+        skipInstall: options.skipInstall,
+        skipGit: options.skipGit,
+        skipValidation: options.skipValidation,
+      });
+
+      if (!postInstallResult.success) {
+        logger.warn('⚠️  Post-install tasks completed with warnings');
+      }
     } catch (error) {
       // Sanitize error messages - don't expose stack traces to users
-      const message = error instanceof Error ? error.message : 'Unknown error occurred';
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
       logger.error(`Failed to create project: ${message}`);
       process.exit(1);
     }
