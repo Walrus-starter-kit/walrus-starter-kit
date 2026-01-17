@@ -125,6 +125,64 @@ This plan synthesizes findings from:
 - [Mysten Walrus SDK Research](../reports/researcher-260117-1353-mysten-walrus-sdk.md)
 - [Product Requirements Document](../../POC/PRD.md)
 
+## Validation Summary
+
+**Validated:** 2026-01-17
+**Questions asked:** 8
+
+### Confirmed Decisions
+
+1. **SDK Strategy**: @mysten/walrus only for MVP
+   - Focus on official SDK with stable testnet/mainnet support
+   - Other SDKs (@tusky, @hibernuts) deferred to post-MVP
+   - Adapter pattern allows future SDK additions
+
+2. **Deep Merge Strategy**: Custom algorithm with array replacement
+   - Objects merge recursively, arrays/primitives replace
+   - Matches create-next-app pattern, simpler to understand
+   - Already implemented in Phase 7 design
+
+3. **Blob Epochs Default**: 1 epoch (~2 weeks mainnet)
+   - Low cost for demos/testing
+   - Users can override via options parameter
+   - Suitable for cache/short-lived use cases
+
+4. **State Management**: Include Zustand for upload queue
+   - Outperforms Context API for non-render-blocking updates
+   - Better DX for file galleries with persistent queue state
+   - 45KB gzipped acceptable for improved performance
+
+5. **Tailwind CSS**: Opt-out (default: true)
+   - Matches modern template expectations
+   - CLI provides --no-tailwind flag for opt-out
+   - Users expect styled examples in generated templates
+
+6. **Upload Pattern**: Relay-only (no fallback)
+   - Simpler implementation, fewer failure modes
+   - Research shows relay handles erasure encoding efficiently
+   - Lighter for browsers, relies on public relay infrastructure
+
+7. **Bundle Size Target**: Relaxed to <300KB total
+   - More realistic given Walrus SDK includes WASM
+   - Still uses tree-shaking + dynamic imports for optimization
+   - Vite plugin warns on oversized chunks, bundlewatch monitors diffs
+
+8. **Windows Path Handling**: Use path module only (<260 chars)
+   - path.join/resolve handle cross-platform correctly
+   - Most project paths stay under limit
+   - Simpler implementation, avoids \\\\?\\ prefix complexity
+
+### Action Items
+
+- [ ] Update Phase 7 bundle size warnings from 200KB → 300KB
+- [ ] Document bundle size relaxation rationale in vite.config.ts comments
+- [ ] Ensure Zustand dependency is added to React framework layer package.json
+- [ ] Verify 1 epoch default is configurable via adapter UploadOptions
+
+### Notes
+
+All recommended approaches were confirmed. Plan is ready for implementation with no major changes required. Bundle size relaxation is the only deviation from original targets—reflects realistic SDK weight constraints while maintaining optimization discipline.
+
 ## Next Steps
 
 1. Review each phase file for detailed implementation steps
