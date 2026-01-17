@@ -9,7 +9,7 @@
   },
   "files": [
     "dist",
-    "templates",
+    "presets",
     "README.md"
   ],
   "scripts": {

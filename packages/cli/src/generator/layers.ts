@@ -1,72 +1,66 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Context } from '../types.js';
-import type { Layer } from './types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Templates are in packages/cli/templates (published with package)
-const TEMPLATE_ROOT = path.join(__dirname, '../../templates');
+// Presets are in packages/cli/presets (published with package)
+const PRESETS_ROOT = path.join(__dirname, '../../presets');
 
 /**
- * Validate that a layer path is within the template root (prevent path traversal)
+ * Validate that a preset path is within the presets root (prevent path traversal)
  */
-function validateLayerPath(layerPath: string): void {
-  const normalized = path.resolve(layerPath);
-  const root = path.resolve(TEMPLATE_ROOT);
+function validatePresetPath(presetPath: string): void {
+  const normalized = path.resolve(presetPath);
+  const root = path.resolve(PRESETS_ROOT);
 
   if (!normalized.startsWith(root)) {
     throw new Error(
-      `Invalid layer path: ${layerPath} is outside template root`
+      `Invalid preset path: ${presetPath} is outside presets root`
     );
   }
 }
 
-export function resolveLayers(context: Context): Layer[] {
-  const layers: Layer[] = [
-    {
-      name: 'base',
-      path: path.join(TEMPLATE_ROOT, 'base'),
-      priority: 1,
-    },
-    {
-      name: `sdk-${context.sdk}`,
-      path: path.join(TEMPLATE_ROOT, `sdk-${context.sdk}`),
-      priority: 2,
-    },
-    {
-      name: context.framework,
-      path: path.join(TEMPLATE_ROOT, context.framework),
-      priority: 3,
-    },
-    {
-      name: context.useCase,
-      path: path.join(TEMPLATE_ROOT, context.useCase),
-      priority: 4,
-    },
-  ];
+/**
+ * Generate preset name from context
+ * Format: {framework}-{sdk}-{useCase}[-optional-features]
+ *
+ * Examples:
+ * - react-mysten-simple-upload
+ * - react-mysten-gallery-enoki
+ * - vue-mysten-gallery-tailwind
+ */
+export function getPresetName(context: Context): string {
+  const parts = [context.framework, context.sdk, context.useCase];
 
-  // Optional: Tailwind layer
-  if (context.tailwind) {
-    layers.push({
-      name: 'tailwind',
-      path: path.join(TEMPLATE_ROOT, 'tailwind'),
-      priority: 5,
-    });
-  }
+  // Add optional features in alphabetical order
+  const optionalFeatures: string[] = [];
 
-  // Optional: Analytics layer
   if (context.analytics) {
-    layers.push({
-      name: 'analytics',
-      path: path.join(TEMPLATE_ROOT, 'analytics'),
-      priority: 6,
-    });
+    optionalFeatures.push('analytics');
   }
 
-  // Validate all layer paths before returning
-  layers.forEach((layer) => validateLayerPath(layer.path));
+  if (context.tailwind) {
+    optionalFeatures.push('tailwind');
+  }
 
-  return layers;
+  // Sort for consistency
+  optionalFeatures.sort();
+
+  return [...parts, ...optionalFeatures].join('-');
+}
+
+/**
+ * Resolve preset path from context
+ * Returns the absolute path to the preset directory
+ */
+export function resolvePresetPath(context: Context): string {
+  const presetName = getPresetName(context);
+  const presetPath = path.join(PRESETS_ROOT, presetName);
+
+  // Validate path for security
+  validatePresetPath(presetPath);
+
+  return presetPath;
 }

@@ -79,7 +79,6 @@ program
 
       const result = await generateProject({
         context,
-        templateDir: join(__dirname, '../templates'),
         targetDir: context.projectPath,
       });
 

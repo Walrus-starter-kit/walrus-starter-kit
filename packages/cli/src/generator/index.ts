@@ -1,15 +1,13 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 import { logger } from '../utils/logger.js';
-import { resolveLayers } from './layers.js';
+import { resolvePresetPath, getPresetName } from './layers.js';
 import {
   copyDirectory,
   ensureDirectory,
   isDirectoryEmpty,
   copyEnvFile,
-  type EnvCopyResult,
 } from './file-ops.js';
-import { mergePackageJsonFiles } from './merge.js';
 import { buildVariables, transformDirectory } from './transform.js';
 import type { GeneratorOptions, GeneratorResult } from './types.js';
 
@@ -32,34 +30,27 @@ export async function generateProject(
       await ensureDirectory(targetDir);
     }
 
-    // Resolve layers
-    const layers = resolveLayers(context);
-    logger.info(`📦 Layers: ${layers.map((l) => l.name).join(' + ')}`);
+    // Resolve preset path
+    const presetName = getPresetName(context);
+    const presetPath = resolvePresetPath(context);
+
+    logger.info(`📦 Using preset: ${presetName}`);
+
+    // Validate preset exists
+    if (!(await fs.pathExists(presetPath))) {
+      throw new Error(
+        `Preset not found: ${presetName}\n` +
+          `Expected at: ${presetPath}\n` +
+          `Available presets: Check packages/cli/presets/`
+      );
+    }
 
     let filesCreated = 0;
 
-    // Copy layers sequentially (later layers override)
-    for (const layer of layers) {
-      if (!(await fs.pathExists(layer.path))) {
-        logger.warn(`⚠️  Layer not found: ${layer.path} (skipping)`);
-        continue;
-      }
-
-      logger.info(`📁 Copying layer: ${layer.name}`);
-
-      if (!dryRun) {
-        const count = await copyDirectory(layer.path, targetDir);
-        filesCreated += count;
-      }
-    }
-
-    // Merge package.json from all layers
-    logger.info('🔗 Merging package.json files');
+    // Copy preset directory to target
+    logger.info(`📁 Copying preset files...`);
     if (!dryRun) {
-      await mergePackageJsonFiles(
-        layers.map((l) => l.path),
-        path.join(targetDir, 'package.json')
-      );
+      filesCreated = await copyDirectory(presetPath, targetDir);
     }
 
     // Transform template variables
@@ -79,7 +70,7 @@ export async function generateProject(
         } else if (envResult.reason === 'already-exists') {
           logger.info('ℹ️  .env already exists, skipped');
         }
-        // Silent if no-source (not all templates have .env.example)
+        // Silent if no-source (not all presets have .env.example)
       } catch (envError) {
         // Non-critical: continue generation even if env copy fails
         logger.warn(`⚠️  Could not copy .env file: ${envError}`);
@@ -90,6 +81,7 @@ export async function generateProject(
 
     logger.success(`✓ Project generated successfully!`);
     logger.info(`📂 Files created: ${filesCreated}`);
+    logger.info(`📦 Preset used: ${presetName}`);
 
     return {
       success: true,

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { resolveLayers } from './layers.js';
+import { getPresetName, resolvePresetPath } from './layers.js';
 import type { Context } from '../types.js';
 import path from 'node:path';
 
-describe('resolveLayers', () => {
-  it('should resolve base layers in correct priority order', () => {
+describe('getPresetName', () => {
+  it('should generate basic preset name', () => {
     const context: Context = {
       projectName: 'test-app',
       projectPath: '/path/to/test-app',
@@ -16,20 +16,11 @@ describe('resolveLayers', () => {
       packageManager: 'pnpm',
     };
 
-    const layers = resolveLayers(context);
-
-    expect(layers.length).toBe(4);
-    expect(layers[0].name).toBe('base');
-    expect(layers[0].priority).toBe(1);
-    expect(layers[1].name).toBe('sdk-mysten');
-    expect(layers[1].priority).toBe(2);
-    expect(layers[2].name).toBe('react');
-    expect(layers[2].priority).toBe(3);
-    expect(layers[3].name).toBe('simple-upload');
-    expect(layers[3].priority).toBe(4);
+    const presetName = getPresetName(context);
+    expect(presetName).toBe('react-mysten-simple-upload');
   });
 
-  it('should include tailwind layer when enabled', () => {
+  it('should include tailwind in preset name', () => {
     const context: Context = {
       projectName: 'test-app',
       projectPath: '/path/to/test-app',
@@ -41,14 +32,11 @@ describe('resolveLayers', () => {
       packageManager: 'pnpm',
     };
 
-    const layers = resolveLayers(context);
-
-    expect(layers.length).toBe(5);
-    expect(layers[4].name).toBe('tailwind');
-    expect(layers[4].priority).toBe(5);
+    const presetName = getPresetName(context);
+    expect(presetName).toBe('react-mysten-gallery-tailwind');
   });
 
-  it('should include analytics layer when enabled', () => {
+  it('should include analytics in preset name', () => {
     const context: Context = {
       projectName: 'test-app',
       projectPath: '/path/to/test-app',
@@ -60,14 +48,11 @@ describe('resolveLayers', () => {
       packageManager: 'npm',
     };
 
-    const layers = resolveLayers(context);
-
-    expect(layers.length).toBe(5);
-    expect(layers[4].name).toBe('analytics');
-    expect(layers[4].priority).toBe(6);
+    const presetName = getPresetName(context);
+    expect(presetName).toBe('vue-mysten-defi-nft-analytics');
   });
 
-  it('should include both optional layers when enabled', () => {
+  it('should include both optional features in alphabetical order', () => {
     const context: Context = {
       projectName: 'test-app',
       projectPath: '/path/to/test-app',
@@ -79,14 +64,14 @@ describe('resolveLayers', () => {
       packageManager: 'yarn',
     };
 
-    const layers = resolveLayers(context);
-
-    expect(layers.length).toBe(6);
-    expect(layers[4].name).toBe('tailwind');
-    expect(layers[5].name).toBe('analytics');
+    const presetName = getPresetName(context);
+    // analytics comes before tailwind alphabetically
+    expect(presetName).toBe('plain-ts-mysten-simple-upload-analytics-tailwind');
   });
+});
 
-  it('should use correct template paths', () => {
+describe('resolvePresetPath', () => {
+  it('should resolve correct preset path', () => {
     const context: Context = {
       projectName: 'test-app',
       projectPath: '/path/to/test-app',
@@ -98,11 +83,29 @@ describe('resolveLayers', () => {
       packageManager: 'pnpm',
     };
 
-    const layers = resolveLayers(context);
+    const presetPath = resolvePresetPath(context);
 
-    layers.forEach((layer) => {
-      expect(layer.path).toContain('templates');
-      expect(path.isAbsolute(layer.path)).toBe(true);
-    });
+    expect(presetPath).toContain('presets');
+    expect(presetPath).toContain('react-mysten-simple-upload');
+    expect(path.isAbsolute(presetPath)).toBe(true);
+  });
+
+  it('should prevent path traversal', () => {
+    const context: Context = {
+      projectName: '../../../etc/passwd',
+      projectPath: '/path/to/test-app',
+      sdk: 'mysten',
+      framework: 'react',
+      useCase: 'simple-upload',
+      analytics: false,
+      tailwind: false,
+      packageManager: 'pnpm',
+    };
+
+    // Should not throw - projectName doesn't affect preset path
+    expect(() => resolvePresetPath(context)).not.toThrow();
+
+    const presetPath = resolvePresetPath(context);
+    expect(presetPath).toContain('presets');
   });
 });
