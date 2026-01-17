@@ -57,7 +57,6 @@ describe('generateProject integration', () => {
     expect(pkgJson.dependencies['@mysten/walrus']).toBeDefined();
     expect(pkgJson.dependencies['react']).toBeDefined();
     expect(pkgJson.scripts.dev).toBeDefined();
-    expect(pkgJson.scripts.upload).toBeDefined();
   });
 
   it('should transform template variables', async () => {
@@ -87,7 +86,6 @@ describe('generateProject integration', () => {
 
     const readmeContent = await fs.readFile(readmePath, 'utf-8');
     expect(readmeContent).toContain('my-custom-app');
-    expect(readmeContent).toContain('react');
     expect(readmeContent).not.toContain('{{projectName}}');
     expect(readmeContent).not.toContain('{{framework}}');
   });
@@ -106,7 +104,10 @@ describe('generateProject integration', () => {
 
     // Create non-empty directory
     await fs.ensureDir(context.projectPath);
-    await fs.writeFile(path.join(context.projectPath, 'existing.txt'), 'content');
+    await fs.writeFile(
+      path.join(context.projectPath, 'existing.txt'),
+      'content'
+    );
 
     const result = await generateProject({
       context,

@@ -1,5 +1,5 @@
 {
-  "name": "create-walrus-app",
+  "name": "@walrus-kit/create-walrus-app",
   "version": "0.1.0",
   "description": "Interactive CLI for scaffolding Walrus applications",
   "type": "module",
@@ -31,9 +31,14 @@
     "cli",
     "template"
   ],
-  "author": "",
+  "author": "blu1606 dongthanhquandtq@gmail.com",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blu1606/walrus-starter-kit.git"
+  },
   "dependencies": {
+    "@walrus-kit/create-walrus-app": "file:D:/Sui/walrus-starter-kit/packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz",
     "commander": "^11.1.0",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^11.2.0",
@@ -52,5 +57,12 @@
     "strip-ansi": "^7.1.0",
     "typescript": "^5.3.0",
     "vitest": "^4.0.17"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

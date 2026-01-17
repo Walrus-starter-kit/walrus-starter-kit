@@ -26,6 +26,9 @@ importers:
 
   packages/cli:
     dependencies:
+      '@walrus-kit/create-walrus-app':
+        specifier: file:D:/Sui/walrus-starter-kit/packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz
+        version: file:packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz
       commander:
         specifier: ^11.1.0
         version: 11.1.0
@@ -579,6 +582,12 @@ packages:
 
   '@vitest/utils@4.0.17':
     resolution: {integrity: sha512-RG6iy+IzQpa9SB8HAFHJ9Y+pTzI+h8553MrciN9eC6TFBErqrQaTas4vG+MVj8S4uKk8uTT2p0vgZPnTdxd96w==}
+
+  '@walrus-kit/create-walrus-app@file:packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz':
+    resolution: {integrity: sha512-DpCJiYLMvjaxgUKDmsY8+tCGZpWu4GrGIv5rMHYZAOt6lJAzIzR5iTLIt9H7wI/5yJVcWIqbWDTKEAgvOq6yiQ==, tarball: file:packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz}
+    version: 0.1.0
+    engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
+    hasBin: true
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1760,6 +1769,15 @@ snapshots:
     dependencies:
       '@vitest/pretty-format': 4.0.17
       tinyrainbow: 3.0.3
+
+  '@walrus-kit/create-walrus-app@file:packages/cli/walrus-kit-create-walrus-app-0.1.0.tgz':
+    dependencies:
+      commander: 11.1.0
+      cross-spawn: 7.0.6
+      fs-extra: 11.3.3
+      kleur: 4.1.5
+      prompts: 2.4.2
+      sort-package-json: 2.15.1
 
   acorn-jsx@5.3.2(acorn@8.15.0):
     dependencies:

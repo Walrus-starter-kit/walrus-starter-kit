@@ -1,4 +1,6 @@
 packages:
-  - "packages/*"
-  - "examples/*"
-  # Templates excluded - static assets only
+  - packages/*
+  - examples/*
+
+onlyBuiltDependencies:
+  - esbuild
