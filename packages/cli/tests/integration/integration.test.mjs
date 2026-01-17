@@ -11,7 +11,7 @@ import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const CLI_PATH = join(__dirname, 'src', 'index.ts');
+const CLI_PATH = join(__dirname, '..', '..', 'src', 'index.ts');
 
 console.log('============================================================');
 console.log('CLI INTEGRATION TEST SUITE');
@@ -27,7 +27,7 @@ function test(name, command, expectations) {
     console.log(`Command: ${command}\n`);
 
     const output = execSync(command, {
-      cwd: __dirname,
+      cwd: join(__dirname, '..', '..'),
       encoding: 'utf-8',
       timeout: 10000,
       env: { ...process.env, npm_config_user_agent: 'pnpm/8.0.0' }

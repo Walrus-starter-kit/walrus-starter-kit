@@ -5,11 +5,14 @@ import { validateProject } from './validator.js';
 import { runPostInstall } from './index.js';
 import spawn from 'cross-spawn';
 import fs from 'fs-extra';
-import { logger } from '../utils/logger.js';
+import type { ChildProcess } from 'node:child_process';
 
 vi.mock('cross-spawn');
 vi.mock('fs-extra');
-vi.mock('../utils/logger.js');
+
+type MockSpawnReturn = Partial<ChildProcess> & {
+  on: ReturnType<typeof vi.fn>;
+};
 
 describe('Post-Install & Validation', () => {
   const projectPath = '/mock/project';
@@ -35,7 +38,7 @@ describe('Post-Install & Validation', () => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       await installDependencies(projectPath, 'pnpm');
       expect(mockSpawn).toHaveBeenCalledWith(
@@ -51,7 +54,7 @@ describe('Post-Install & Validation', () => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       await installDependencies(projectPath, 'yarn');
       expect(mockSpawn).toHaveBeenCalledWith('yarn', [], expect.any(Object));
@@ -73,7 +76,7 @@ describe('Post-Install & Validation', () => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       const result = await initializeGit(projectPath);
       expect(result.success).toBe(true);
@@ -91,7 +94,7 @@ describe('Post-Install & Validation', () => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       const result = await createInitialCommit(projectPath);
       expect(result.success).toBe(true);
@@ -145,12 +148,12 @@ describe('Post-Install & Validation', () => {
 
   describe('runPostInstall Orchestration', () => {
     it('should run all steps by default', async () => {
-      const mockSpawn = vi.mocked(spawn).mockReturnValue({
+      vi.mocked(spawn).mockReturnValue({
         on: vi.fn().mockImplementation((event, cb) => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       vi.mocked(fs.pathExists).mockImplementation(async () => true);
       vi.mocked(fs.readJson).mockResolvedValue({
@@ -191,7 +194,7 @@ describe('Post-Install & Validation', () => {
           if (event === 'close') cb(0);
           return { on: vi.fn() };
         }),
-      } as any);
+      } as MockSpawnReturn);
 
       const result = await runPostInstall({
         context,

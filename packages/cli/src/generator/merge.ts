@@ -2,12 +2,20 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import sortPackageJson from 'sort-package-json';
 
+type JSONValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JSONValue[]
+  | { [key: string]: JSONValue };
+
 /**
  * Deep merge two objects
  * Arrays and primitives are replaced, objects are merged recursively
  * Note: null values override (later layers win)
  */
-export function deepMerge(target: any, source: any): any {
+export function deepMerge(target: JSONValue, source: JSONValue): JSONValue {
   // Handle undefined (skip)
   if (source === undefined) {
     return target;
@@ -25,10 +33,10 @@ export function deepMerge(target: any, source: any): any {
 
   // Objects: Merge recursively
   if (typeof source === 'object' && typeof target === 'object') {
-    const result = { ...target } as any;
+    const result = { ...target } as Record<string, JSONValue>;
 
     for (const key in source) {
-      const sourceValue = (source as any)[key];
+      const sourceValue = (source as Record<string, JSONValue>)[key];
       const targetValue = result[key];
 
       if (
@@ -59,14 +67,16 @@ export async function mergePackageJsonFiles(
   layers: string[],
   outputPath: string
 ): Promise<void> {
-  let merged: any = {};
+  let merged: Record<string, JSONValue> = {};
 
   for (const layerPath of layers) {
     const pkgPath = path.join(layerPath, 'package.json');
 
     if (await fs.pathExists(pkgPath)) {
       const pkgJson = await fs.readJson(pkgPath);
-      merged = deepMerge(merged, pkgJson);
+      const result = deepMerge(merged, pkgJson);
+      // Ensure result is an object (package.json should always be an object)
+      merged = (result && typeof result === 'object' && !Array.isArray(result)) ? result : merged;
     }
   }
 

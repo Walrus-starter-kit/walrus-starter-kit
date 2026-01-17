@@ -1,5 +1,4 @@
 import kleur from 'kleur';
-import { logger } from '../utils/logger.js';
 import { getRunCommand } from './package-manager.js';
 import type { Context } from '../types.js';
 
