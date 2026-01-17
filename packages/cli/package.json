@@ -1,0 +1,40 @@
+{
+  "name": "create-walrus-app",
+  "version": "0.1.0",
+  "description": "Interactive CLI for scaffolding Walrus applications",
+  "type": "module",
+  "bin": {
+    "create-walrus-app": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo \"Test placeholder\"",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "walrus",
+    "sui",
+    "scaffold",
+    "cli",
+    "template"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "prompts": "^2.4.2",
+    "kleur": "^4.1.5",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/prompts": "^2.4.9",
+    "@types/fs-extra": "^11.0.4",
+    "typescript": "^5.3.0"
+  }
+}
