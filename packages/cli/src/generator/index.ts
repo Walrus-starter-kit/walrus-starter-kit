@@ -1,4 +1,3 @@
-import path from 'node:path';
 import fs from 'fs-extra';
 import { logger } from '../utils/logger.js';
 import { resolvePresetPath, getPresetName } from './layers.js';

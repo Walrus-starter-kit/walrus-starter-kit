@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { storageAdapter } from '../lib/walrus/index.js';
-import type { UploadOptions } from '../lib/walrus/types.js';
+import type { UploadOptions, SignAndExecuteTransactionArgs } from '../lib/walrus/types.js';
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from '@mysten/dapp-kit';
 
 export function useUpload() {
@@ -21,7 +21,7 @@ export function useUpload() {
       }
 
       // Wrap signAndExecute to return Promise
-      const signTransaction = (args: { transaction: any }) => {
+      const signTransaction = (args: SignAndExecuteTransactionArgs) => {
         return new Promise<{ digest: string }>((resolve, reject) => {
           signAndExecute(
             {

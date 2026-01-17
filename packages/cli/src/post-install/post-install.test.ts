@@ -186,7 +186,7 @@ describe('Post-Install & Validation', () => {
         }),
       } as MockSpawnReturn);
 
-      const result = await runPostInstall({
+      await runPostInstall({
         context,
         projectPath,
         skipGit: false,

@@ -110,7 +110,7 @@ export class MystenStorageAdapter implements StorageAdapter {
   async download(
     blobId: string,
     options?: DownloadOptions
-  ): Promise<Uint8Array | string | any> {
+  ): Promise<Uint8Array | string | unknown> {
     const client = getWalrusClient();
 
     try {
@@ -175,7 +175,7 @@ export class MystenStorageAdapter implements StorageAdapter {
         contentType: tags['content-type'] || 'application/octet-stream',
         fileName: tags['original-name'] || identifier || `blob-${blobId.slice(0, 8)}`,
         tags,
-        createdAt: (metadata as any).createdAt || Date.now(),
+        createdAt: (metadata as unknown as { createdAt?: number }).createdAt || Date.now(),
       };
     } catch (error) {
       throw new Error(

@@ -30,7 +30,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       <SuiClientProvider
         networks={networkConfig}
         defaultNetwork={validatedNetwork}
-        createClient={((network: string | number, config: { readonly url: string }) => {
+        createClient={(network: string | number, config: { readonly url: string }) => {
           // Create SuiClient with Walrus extension
           const client = new SuiClient({
             url: config.url,
@@ -43,7 +43,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
             })
           );
           return client;
-        }) as any}
+        }}
       >
         <SuiWalletProvider>{children}</SuiWalletProvider>
       </SuiClientProvider>

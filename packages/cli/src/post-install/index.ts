@@ -26,7 +26,6 @@ export async function runPostInstall(
     context,
     projectPath,
     skipInstall = false,
-    skipGit = false,
     skipValidation = false,
   } = options;
 

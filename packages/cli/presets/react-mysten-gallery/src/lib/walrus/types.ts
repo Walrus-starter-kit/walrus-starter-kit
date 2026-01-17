@@ -5,6 +5,9 @@
  * allowing use case layers to work with any Walrus SDK.
  */
 
+import type { SuiClient } from '@mysten/sui/client';
+import type { Transaction } from '@mysten/sui/transactions';
+
 export interface BlobMetadata {
   blobId: string;
   size: number;
@@ -17,17 +20,26 @@ export interface BlobMetadata {
   tags?: Record<string, string>;
 }
 
+export interface SignAndExecuteTransactionArgs {
+  transaction: Transaction;
+}
+
+export interface SignAndExecuteTransactionResult {
+  digest: string;
+  effects?: unknown;
+}
+
 export interface UploadOptions {
   /** Number of epochs to store (Walrus-specific) */
   epochs?: number;
   /** MIME type of the content */
   contentType?: string;
   /** Sui client with Walrus extension (from useSuiClient hook) */
-  client?: any;
+  client?: SuiClient;
   /** Wallet signer for authenticated uploads with address and transaction signing */
   signer?: {
     address: string;
-    signAndExecuteTransaction: (args: any) => Promise<any>;
+    signAndExecuteTransaction: (args: SignAndExecuteTransactionArgs) => Promise<SignAndExecuteTransactionResult>;
   };
 }
 
@@ -53,7 +65,7 @@ export interface StorageAdapter {
    * @param options - Download configuration
    * @returns Blob data in requested format (Uint8Array, string, or JSON)
    */
-  download(blobId: string, options?: DownloadOptions): Promise<Uint8Array | string | any>;
+  download(blobId: string, options?: DownloadOptions): Promise<Uint8Array | string | unknown>;
 
   /**
    * Get blob metadata without downloading content
@@ -78,6 +90,8 @@ export interface GalleryItem {
   size: number;
   contentType: string;
   uploadedAt: number;
+  /** Preview URL for displaying images/media - created from blob data */
+  previewUrl?: string;
 }
 
 export interface GalleryIndex {

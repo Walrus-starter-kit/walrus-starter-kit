@@ -28,7 +28,7 @@ export function FilePreview() {
     }
 
     const contentType = metadata?.contentType || 'application/octet-stream';
-    const blob = new Blob([data as any], { type: contentType });
+    const blob = new Blob([data as Uint8Array], { type: contentType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
