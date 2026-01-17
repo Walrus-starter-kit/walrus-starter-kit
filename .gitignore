@@ -68,12 +68,22 @@ apps/desktop/src-tauri/target/
 # Debug files
 *.log.*
 debug/
+debug-test/
 .vscode-test/
 
 # Test outputs
 examples/test-*
+test-*/
+*.test.local
 
 # Misc
 *.seed
 *.pid
 *.pid.lock
+
+# Repomix outputs
+repomix-output.xml
+*-repomix.md
+
+# Plans and Reports (keep in version control but ignore temp files)
+plans/reports/*.tmp

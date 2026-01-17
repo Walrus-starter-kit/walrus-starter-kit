@@ -1,7 +1,7 @@
 {
   "branches": ["main"],
   "repositoryUrl": "https://github.com/blu1606/walrus-starter-kit",
-  "tagFormat": "@walrus-kit/create-walrus-app-v${version}",
+  "tagFormat": "@blu1606/create-walrus-app-v${version}",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",

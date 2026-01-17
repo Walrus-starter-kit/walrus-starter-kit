@@ -6,6 +6,7 @@
     "node": true,
     "es2022": true
   },
+  "ignorePatterns": ["debug-test", "debug", "tmp", "temp", "*.local", "dist", "build", "coverage"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/explicit-function-return-type": "off"
