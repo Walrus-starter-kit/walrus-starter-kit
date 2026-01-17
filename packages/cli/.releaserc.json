@@ -8,15 +8,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "pnpm version ${nextRelease.version} --no-git-tag-version --allow-same-version"
-      }
-    ],
-    [
-      "@semantic-release/npm",
-      {
-        "npmPublish": true,
-        "pkgRoot": ".",
-        "tarballDir": "dist"
+        "prepareCmd": "node -e \"const fs=require('fs');const pkg=JSON.parse(fs.readFileSync('./package.json'));pkg.version='${nextRelease.version}';fs.writeFileSync('./package.json',JSON.stringify(pkg,null,2)+'\\n')\"",
+        "publishCmd": "pnpm publish --access public --no-git-checks"
       }
     ],
     [
