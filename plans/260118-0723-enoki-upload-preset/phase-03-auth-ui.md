@@ -9,7 +9,8 @@
 ## Overview
 
 **Priority:** P1
-**Status:** pending
+**Status:** complete ✓
+**Completed:** 2026-01-18
 **Description:** Create Google login button, enhance wallet-connect for dual auth, add Enoki auth hooks
 
 ## Key Insights
