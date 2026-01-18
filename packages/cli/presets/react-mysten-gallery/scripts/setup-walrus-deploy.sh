@@ -69,10 +69,10 @@ setup_bun() {
 setup_site_builder() {
     # Set install directory based on OS
     if [ "$OS_TYPE" = "windows" ]; then
-        WALRUS_BIN="$USERPROFILE/.walrus/bin"
+        WALRUS_BIN="$USERPROFILE/bin"
         SITE_BUILDER="$WALRUS_BIN/site-builder.exe"
     else
-        WALRUS_BIN="$HOME/.walrus/bin"
+        WALRUS_BIN="$HOME/bin"
         SITE_BUILDER="$WALRUS_BIN/site-builder"
     fi
 
@@ -93,22 +93,18 @@ setup_site_builder() {
         windows) BINARY_NAME="site-builder-windows.exe" ;;
     esac
 
-    DOWNLOAD_URL="https://github.com/MystenLabs/walrus-sites/releases/latest/download/$BINARY_NAME"
-
-    # Download with retry
-    if ! curl -fsSL -o "$SITE_BUILDER" "$DOWNLOAD_URL"; then
-        echo "❌ Failed to download site-builder from: $DOWNLOAD_URL"
-        exit 1
-    fi
+    SYSTEM=ubuntu-x86_64
+    curl https://storage.googleapis.com/mysten-walrus-binaries/site-builder-testnet-latest-$SYSTEM -o site-builder
+    chmod +x site-builder
 
     chmod +x "$SITE_BUILDER"
     echo "✅ site-builder installed: $SITE_BUILDER"
 
     # Add to PATH hint (won't persist after script)
     if [ "$OS_TYPE" = "windows" ]; then
-        export PATH="$USERPROFILE/.walrus/bin:$PATH"
+        export PATH="$USERPROFILE/bin:$PATH"
     else
-        export PATH="$HOME/.walrus/bin:$PATH"
+        export PATH="$HOME/bin:$PATH"
     fi
 }
 
@@ -117,9 +113,9 @@ setup_site_builder() {
 # ============================================================================
 setup_portal() {
     if [ "$OS_TYPE" = "windows" ]; then
-        PORTAL_DIR="$USERPROFILE/.walrus/portal"
+        PORTAL_DIR="$USERPROFILE/portal"
     else
-        PORTAL_DIR="$HOME/.walrus/portal"
+        PORTAL_DIR="$HOME/portal"
     fi
 
     if [ -d "$PORTAL_DIR" ]; then
@@ -132,7 +128,7 @@ setup_portal() {
         mkdir -p "$(dirname "$PORTAL_DIR")"
 
         # Clone with depth=1 for faster download
-        if ! git clone --depth=1 https://github.com/MystenLabs/walrus-sites.git "$PORTAL_DIR"; then
+        if ! git clone --depth=1 https://github.com/ManTT-Data/portal.git "$PORTAL_DIR"; then
             echo "❌ Failed to clone portal repository"
             exit 1
         fi
@@ -206,15 +202,15 @@ add_project_scripts() {
 
         if (!pkg.scripts['deploy:walrus']) {
             const siteBuilderPath = process.platform === 'win32'
-                ? '%USERPROFILE%/.walrus/bin/site-builder.exe'
-                : '~/.walrus/bin/site-builder';
+                ? '%USERPROFILE%/bin/site-builder.exe'
+                : '~/bin/site-builder';
             pkg.scripts['deploy:walrus'] = siteBuilderPath + ' --context=testnet deploy ./dist --epochs 10';
         }
 
         if (!pkg.scripts['walrus:portal']) {
             const portalPath = process.platform === 'win32'
-                ? 'cd %USERPROFILE%/.walrus/portal'
-                : 'cd ~/.walrus/portal';
+                ? 'cd %USERPROFILE%/portal'
+                : 'cd ~/portal';
             pkg.scripts['walrus:portal'] = portalPath + ' && bun run server';
         }
 
@@ -264,9 +260,9 @@ main() {
     echo "Next Steps:"
     echo "  1. Configure your SUI private key:"
     if [ "$OS_TYPE" = "windows" ]; then
-        echo "     notepad %USERPROFILE%\\.walrus\\portal\\.env"
+        echo "     notepad %USERPROFILE%\\portal\\.env"
     else
-        echo "     nano ~/.walrus/portal/.env"
+        echo "     nano ~/portal/.env"
     fi
     echo "     Add: SUI_PRIVATE_KEY=0x..."
     echo ""
