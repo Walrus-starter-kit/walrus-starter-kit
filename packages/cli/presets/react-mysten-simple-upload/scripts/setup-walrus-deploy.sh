@@ -86,18 +86,34 @@ setup_site_builder() {
     echo "📥 Downloading site-builder for $OS_TYPE..."
     mkdir -p "$WALRUS_BIN"
 
-    # Select binary based on OS
+    # Select binary based on OS and architecture (following official Walrus naming)
     case "$OS_TYPE" in
-        linux)   BINARY_NAME="site-builder-linux" ;;
-        macos)   BINARY_NAME="site-builder-macos" ;;
-        windows) BINARY_NAME="site-builder-windows.exe" ;;
+        linux)
+            case "$ARCH" in
+                x86_64) SYSTEM="ubuntu-x86_64" ;;
+                *)      SYSTEM="ubuntu-x86_64-generic" ;;
+            esac
+            ;;
+        macos)
+            case "$ARCH" in
+                arm64)  SYSTEM="macos-arm64" ;;
+                x86_64) SYSTEM="macos-x86_64" ;;
+                *)      SYSTEM="macos-x86_64" ;;
+            esac
+            ;;
+        windows)
+            SYSTEM="windows-x86_64.exe"
+            ;;
     esac
 
-    DOWNLOAD_URL="https://github.com/MystenLabs/walrus-sites/releases/latest/download/$BINARY_NAME"
+    # Use official Google Cloud Storage URL (testnet)
+    DOWNLOAD_URL="https://storage.googleapis.com/mysten-walrus-binaries/site-builder-testnet-latest-$SYSTEM"
 
     # Download with retry
     if ! curl -fsSL -o "$SITE_BUILDER" "$DOWNLOAD_URL"; then
         echo "❌ Failed to download site-builder from: $DOWNLOAD_URL"
+        echo "   System detected: $OS_TYPE ($ARCH)"
+        echo "   Binary variant: $SYSTEM"
         exit 1
     fi
 
@@ -141,6 +157,12 @@ setup_portal() {
         echo "✅ Portal cloned to: $PORTAL_DIR"
     fi
 
+    # Navigate to portal subdirectory (the actual portal app is in portal/ folder)
+    if [ -d "portal" ]; then
+        cd portal
+        echo "📍 Using portal subdirectory"
+    fi
+
     # Setup .env if not exists
     if [ ! -f ".env" ]; then
         if [ -f ".env.example" ]; then
@@ -161,21 +183,24 @@ EOF
 
         echo ""
         echo "⚠️  ACTION REQUIRED:"
-        echo "   Edit $PORTAL_DIR/.env"
+        echo "   Edit $PORTAL_DIR/portal/.env (or $PORTAL_DIR/.env)"
         echo "   Add your SUI_PRIVATE_KEY=0x..."
         echo ""
     else
         echo "✅ .env already configured"
     fi
 
-    # Install portal dependencies
-    echo "📦 Installing portal dependencies..."
-    if ! bun install --silent; then
-        echo "❌ Bun install failed"
-        exit 1
+    # Install portal dependencies (if package.json exists)
+    if [ -f "package.json" ]; then
+        echo "📦 Installing portal dependencies..."
+        if ! bun install --silent; then
+            echo "❌ Bun install failed"
+            exit 1
+        fi
+        echo "✅ Portal dependencies installed"
+    else
+        echo "⚠️  No package.json found, skipping dependency installation"
     fi
-
-    echo "✅ Portal dependencies installed"
 }
 
 # ============================================================================
@@ -193,7 +218,9 @@ add_project_scripts() {
     echo "📝 Adding Walrus deploy scripts to package.json..."
 
     # Use Node.js to safely modify package.json (guaranteed to exist in Node projects)
-    node -e "
+    # Use NODE_CMD to handle both Unix and Windows (node.exe in Git Bash)
+    NODE_CMD=$(command -v node || command -v node.exe)
+    "$NODE_CMD" -e "
         const fs = require('fs');
         const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -245,7 +272,8 @@ main() {
         exit 1
     fi
 
-    if ! command -v node &>/dev/null; then
+    # Check for Node.js - Windows-compatible
+    if ! command -v node &>/dev/null && ! command -v node.exe &>/dev/null; then
         echo "❌ Node.js not found. Install: https://nodejs.org"
         exit 1
     fi

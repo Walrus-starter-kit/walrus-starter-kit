@@ -69,10 +69,10 @@ setup_bun() {
 setup_site_builder() {
     # Set install directory based on OS
     if [ "$OS_TYPE" = "windows" ]; then
-        WALRUS_BIN="$USERPROFILE/bin"
+        WALRUS_BIN="$USERPROFILE/.walrus/bin"
         SITE_BUILDER="$WALRUS_BIN/site-builder.exe"
     else
-        WALRUS_BIN="$HOME/bin"
+        WALRUS_BIN="$HOME/.walrus/bin"
         SITE_BUILDER="$WALRUS_BIN/site-builder"
     fi
 
@@ -86,25 +86,45 @@ setup_site_builder() {
     echo "📥 Downloading site-builder for $OS_TYPE..."
     mkdir -p "$WALRUS_BIN"
 
-    # Select binary based on OS
+    # Select binary based on OS and architecture (following official Walrus naming)
     case "$OS_TYPE" in
-        linux)   BINARY_NAME="site-builder-linux" ;;
-        macos)   BINARY_NAME="site-builder-macos" ;;
-        windows) BINARY_NAME="site-builder-windows.exe" ;;
+        linux)
+            case "$ARCH" in
+                x86_64) SYSTEM="ubuntu-x86_64" ;;
+                *)      SYSTEM="ubuntu-x86_64-generic" ;;
+            esac
+            ;;
+        macos)
+            case "$ARCH" in
+                arm64)  SYSTEM="macos-arm64" ;;
+                x86_64) SYSTEM="macos-x86_64" ;;
+                *)      SYSTEM="macos-x86_64" ;;
+            esac
+            ;;
+        windows)
+            SYSTEM="windows-x86_64.exe"
+            ;;
     esac
 
-    SYSTEM=ubuntu-x86_64
-    curl https://storage.googleapis.com/mysten-walrus-binaries/site-builder-testnet-latest-$SYSTEM -o site-builder
-    chmod +x site-builder
+    # Use official Google Cloud Storage URL (testnet)
+    DOWNLOAD_URL="https://storage.googleapis.com/mysten-walrus-binaries/site-builder-testnet-latest-$SYSTEM"
+
+    # Download with retry
+    if ! curl -fsSL -o "$SITE_BUILDER" "$DOWNLOAD_URL"; then
+        echo "❌ Failed to download site-builder from: $DOWNLOAD_URL"
+        echo "   System detected: $OS_TYPE ($ARCH)"
+        echo "   Binary variant: $SYSTEM"
+        exit 1
+    fi
 
     chmod +x "$SITE_BUILDER"
     echo "✅ site-builder installed: $SITE_BUILDER"
 
     # Add to PATH hint (won't persist after script)
     if [ "$OS_TYPE" = "windows" ]; then
-        export PATH="$USERPROFILE/bin:$PATH"
+        export PATH="$USERPROFILE/.walrus/bin:$PATH"
     else
-        export PATH="$HOME/bin:$PATH"
+        export PATH="$HOME/.walrus/bin:$PATH"
     fi
 }
 
@@ -113,9 +133,9 @@ setup_site_builder() {
 # ============================================================================
 setup_portal() {
     if [ "$OS_TYPE" = "windows" ]; then
-        PORTAL_DIR="$USERPROFILE/portal"
+        PORTAL_DIR="$USERPROFILE/.walrus/portal"
     else
-        PORTAL_DIR="$HOME/portal"
+        PORTAL_DIR="$HOME/.walrus/portal"
     fi
 
     if [ -d "$PORTAL_DIR" ]; then
@@ -135,6 +155,12 @@ setup_portal() {
 
         cd "$PORTAL_DIR"
         echo "✅ Portal cloned to: $PORTAL_DIR"
+    fi
+
+    # Navigate to portal subdirectory if it exists (some repos have portal/ subfolder)
+    if [ -d "portal" ] && [ -f "portal/package.json" ]; then
+        cd portal
+        echo "📍 Using portal subdirectory"
     fi
 
     # Setup .env if not exists
@@ -164,14 +190,17 @@ EOF
         echo "✅ .env already configured"
     fi
 
-    # Install portal dependencies
-    echo "📦 Installing portal dependencies..."
-    if ! bun install --silent; then
-        echo "❌ Bun install failed"
-        exit 1
+    # Install portal dependencies (if package.json exists)
+    if [ -f "package.json" ]; then
+        echo "📦 Installing portal dependencies..."
+        if ! bun install --silent; then
+            echo "❌ Bun install failed"
+            exit 1
+        fi
+        echo "✅ Portal dependencies installed"
+    else
+        echo "⚠️  No package.json found, skipping dependency installation"
     fi
-
-    echo "✅ Portal dependencies installed"
 }
 
 # ============================================================================
@@ -189,7 +218,9 @@ add_project_scripts() {
     echo "📝 Adding Walrus deploy scripts to package.json..."
 
     # Use Node.js to safely modify package.json (guaranteed to exist in Node projects)
-    node -e "
+    # Use NODE_CMD to handle both Unix and Windows (node.exe in Git Bash)
+    NODE_CMD=$(command -v node || command -v node.exe)
+    "$NODE_CMD" -e "
         const fs = require('fs');
         const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -202,15 +233,15 @@ add_project_scripts() {
 
         if (!pkg.scripts['deploy:walrus']) {
             const siteBuilderPath = process.platform === 'win32'
-                ? '%USERPROFILE%/bin/site-builder.exe'
-                : '~/bin/site-builder';
+                ? '%USERPROFILE%/.walrus/bin/site-builder.exe'
+                : '~/.walrus/bin/site-builder';
             pkg.scripts['deploy:walrus'] = siteBuilderPath + ' --context=testnet deploy ./dist --epochs 10';
         }
 
         if (!pkg.scripts['walrus:portal']) {
             const portalPath = process.platform === 'win32'
-                ? 'cd %USERPROFILE%/portal'
-                : 'cd ~/portal';
+                ? 'cd %USERPROFILE%/.walrus/portal'
+                : 'cd ~/.walrus/portal';
             pkg.scripts['walrus:portal'] = portalPath + ' && bun run server';
         }
 
@@ -241,7 +272,8 @@ main() {
         exit 1
     fi
 
-    if ! command -v node &>/dev/null; then
+    # Check for Node.js - Windows-compatible
+    if ! command -v node &>/dev/null && ! command -v node.exe &>/dev/null; then
         echo "❌ Node.js not found. Install: https://nodejs.org"
         exit 1
     fi
