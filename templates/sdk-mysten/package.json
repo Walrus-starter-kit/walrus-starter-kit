@@ -6,7 +6,7 @@
   "description": "Mysten Walrus SDK layer for walrus-starter-kit",
   "dependencies": {
     "@mysten/walrus": "^0.9.0",
-    "@mysten/sui": "^1.10.0"
+    "@mysten/sui": "1.45.2"
   },
   "peerDependencies": {
     "typescript": "^5.3.0"

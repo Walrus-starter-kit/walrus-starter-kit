@@ -28,7 +28,7 @@ export function FilePreview() {
     }
 
     const contentType = metadata?.contentType || 'application/octet-stream';
-    const blob = new Blob([data as Uint8Array], { type: contentType });
+    const blob = new Blob([data as BlobPart], { type: contentType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -57,7 +57,7 @@ export function FilePreview() {
 
       {data && (
         <div className="preview-content icon-list">
-          <p className="text-success">✓ Blob found <span className="text-secondary">({data.byteLength || data.length} bytes)</span></p>
+          <p className="text-success">✓ Blob found <span className="text-secondary">({(data as Uint8Array).byteLength || (data as string).length} bytes)</span></p>
           {metadata?.fileName && <p className="text-secondary">File: <span className="text-accent">{metadata.fileName}</span></p>}
           {metadata?.contentType && <p className="text-secondary">Type: <span className="text-accent">{metadata.contentType}</span></p>}
           {preview && (
