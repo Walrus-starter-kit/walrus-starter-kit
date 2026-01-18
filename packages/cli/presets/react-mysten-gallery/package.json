@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "setup-walrus-deploy": "bash scripts/setup-walrus-deploy.sh"
+    "setup-walrus-deploy": "bash scripts/setup-walrus-deploy.sh",
+    "deploy:walrus": "~/.walrus/bin/site-builder --context=testnet deploy ./dist --epochs 10",
+    "walrus:portal": "bash scripts/run-portal.sh"
   },
   "dependencies": {
     "@mysten/dapp-kit": "^0.14.0",
