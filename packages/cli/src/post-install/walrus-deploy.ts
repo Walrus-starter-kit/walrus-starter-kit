@@ -90,7 +90,7 @@ export async function setupWalrusDeploy(
     // Non-fatal: log and continue
     logger.warn('⚠️  Walrus deployment setup skipped due to error');
     if (error instanceof Error) {
-      logger.debug(error.message);
+      logger.warn(error.message);
     }
   }
 }
