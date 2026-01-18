@@ -1,7 +1,7 @@
 ---
 title: "Enoki zkLogin Simple Upload Preset"
 description: "Create react-mysten-simple-upload-enoki preset with Google OAuth zkLogin authentication"
-status: pending
+status: in-progress
 priority: P1
 effort: 6h
 branch: main
@@ -50,14 +50,14 @@ Create new preset `react-mysten-simple-upload-enoki` that combines:
 - Test upload flow with both auth methods
 
 ### Phase 05: Documentation & Setup
-**Status:** pending | **File:** phase-05-documentation.md
+**Status:** complete ✓ | **File:** phase-05-documentation.md | **Completed:** 2026-01-18
 - Write comprehensive README
 - Document Enoki setup steps
 - Add troubleshooting guide
 - Create example .env configuration
 
 ### Phase 06: Testing & Validation
-**Status:** pending | **File:** phase-06-testing.md
+**Status:** in-progress | **File:** phase-06-testing.md
 - Manual testing with Google OAuth
 - Verify upload/download flows
 - Test wallet fallback scenarios
