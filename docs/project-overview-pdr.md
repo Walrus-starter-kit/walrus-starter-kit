@@ -2,12 +2,12 @@
 
 **Project Name:** Walrus Starter Kit
 **CLI Tool:** `create-walrus-app`
-**Version:** 0.1.0
-**Status:** In Progress (Phase 8 Complete - Core MVP & Testing Ready)
+**Version:** 0.1.4
+**Status:** In Progress (Enoki Integration Phase 01 Complete)
 
 ## 1. Executive Summary
 
-Walrus Starter Kit is a production-grade interactive CLI tool designed to simplify the development of applications on the Walrus Protocol (Sui blockchain). It provides a modular scaffolding system using a **Base + Layer + Adapter Pattern**, allowing developers to choose from various SDKs, frameworks, and use cases. The project has completed Phase 8 (Testing and Validation), verifying the CLI engine's reliability across multiple template combinations.
+Walrus Starter Kit is a production-grade interactive CLI tool designed to simplify the development of applications on the Walrus Protocol (Sui blockchain). It provides a modular scaffolding system using a **Base + Layer + Adapter Pattern**, allowing developers to choose from various SDKs, frameworks, and use cases. The project is currently expanding its SDK support with Enoki (zkLogin) integration.
 
 ## 2. Product Vision
 
@@ -17,6 +17,7 @@ The goal is to provide the "create-next-app" experience for the Walrus ecosystem
 - **Modular Architecture:** Deep merging of templates (Base + SDK + Framework + Use Case).
 - **SDK Agnostic:** Use case logic works across different Walrus SDKs via an Adapter Pattern.
 - **Production Ready:** Includes best practices for styling (Tailwind), linting, and TypeScript.
+- **zkLogin Support:** Integration with Enoki for seamless user onboarding via social logins.
 
 ## 3. Target Audience
 

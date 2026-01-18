@@ -91,25 +91,43 @@
 - [x] Automated template combination testing
       **Completed:** 2026-01-18 02:15
 
-### Phase 9: SDK Integration Fix (PLANNED)
+### Phase 9: SDK Integration Fix (COMPLETE)
 
-- [ ] Fix template adapter type mismatches with @mysten/walrus v0.9.0
-- [ ] Update client.ts network types
-- [ ] Fix export paths in templates
-- [ ] Verify zero-error TypeScript compilation for all combinations
-      **Target:** 2026-01-18
+- [x] Fix template adapter type mismatches with @mysten/walrus v0.9.0
+- [x] Update client.ts network types
+- [x] Fix export paths in templates
+- [x] Verify zero-error TypeScript compilation for all combinations
+      **Completed:** 2026-01-18 07:30
+
+### Phase 10: Enoki Integration (IN PROGRESS)
+
+- [x] Phase 01: Enoki Scaffolding (Folder structure, config, README)
+- [ ] Phase 02: Constants & Zod Validation implementation
+- [ ] Phase 03: EnokiProvider & Auth Flow implementation
+- [ ] Phase 04: CLI Matrix & Integration testing
+      **Target:** 2026-01-19
 
 ---
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 98% (Core Engine & React MVP Ready + Testing Phase Complete)
-- **Current Milestone:** v0.1.2 Alpha (Fixing Template Types)
-- **Last Update:** 2026-01-18 02:30
+- **Overall Completion:** 98.5% (Enoki Scaffolding Complete)
+- **Current Milestone:** v0.1.4 Alpha (Enoki Integration)
+- **Last Update:** 2026-01-18 08:05
 
 ---
 
 ## 📝 Changelog
+
+### [0.1.4] - 2026-01-18
+
+#### Added
+
+- **Enoki Preset Scaffolding** - Initial folder structure and configuration for Enoki zkLogin integration
+  - Created `templates/enoki/` layer with providers, lib, and config
+  - Implemented `SessionStorage` adapter for Enoki
+  - Added `.env.example`, `package.json`, and `README.md` for Enoki layer
+  - Created `react-mysten-simple-upload-enoki` preset placeholder
 
 ### [0.1.3] - 2026-01-18
 
