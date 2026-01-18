@@ -59,7 +59,7 @@ Interactive scaffolder with hybrid mode (interactive/CI-CD):
 - ✅ CLI Engine & React MVP Ready.
 - ✅ Automated testing for template combinations.
 - ✅ Automatic `.env` configuration.
-- ✅ Enoki Scaffolding (Phase 01): Folder structure, configuration, and README.
+- ✅ Enoki Scaffolding & Documentation (Phase 01 & 05): Folder structure, configuration, and comprehensive setup documentation.
 - 🚧 Enoki Implementation (Phase 02-04): Provider and Auth flow implementation.
 
 ## 5. Technology Stack

@@ -202,7 +202,7 @@ The project supports multiple Walrus SDKs with compatibility validation:
 | SDK       | Package                 | Frameworks           | Use Cases       | Status         |
 | --------- | ----------------------- | -------------------- | --------------- | -------------- |
 | Mysten    | `@mysten/walrus`        | React, Vue, Plain TS | All             | Testnet stable |
-| Enoki     | `@mysten/enoki`         | React                | Simple Upload   | WIP            |
+| Enoki     | `@mysten/enoki`         | React                | Simple Upload   | WIP (Docs Ready) |
 | Tusky     | `@tusky-io/ts-sdk`      | React, Vue, Plain TS | Upload, Gallery | Planned        |
 | Hibernuts | `@hibernuts/walrus-sdk` | React, Plain TS      | Upload only     | Planned        |
 

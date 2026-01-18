@@ -102,6 +102,7 @@
 ### Phase 10: Enoki Integration (IN PROGRESS)
 
 - [x] Phase 01: Enoki Scaffolding (Folder structure, config, README)
+- [x] Phase 05: Documentation & Setup Guide (Comprehensive README, Enoki/Google setup guides)
 - [ ] Phase 02: Constants & Zod Validation implementation
 - [ ] Phase 03: EnokiProvider & Auth Flow implementation
 - [ ] Phase 04: CLI Matrix & Integration testing
@@ -111,13 +112,25 @@
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 98.5% (Enoki Scaffolding Complete)
+- **Overall Completion:** 98.7% (Enoki Scaffolding & Documentation Complete)
 - **Current Milestone:** v0.1.4 Alpha (Enoki Integration)
-- **Last Update:** 2026-01-18 08:05
+- **Last Update:** 2026-01-18 09:15
 
 ---
 
 ## 📝 Changelog
+
+### [0.1.5] - 2026-01-18
+
+#### Added
+
+- **Enoki Documentation (Phase 10/05)** - Comprehensive setup guide for Enoki zkLogin
+  - Added step-by-step Enoki Console configuration guide
+  - Added Google OAuth Cloud Console setup instructions
+  - Documented environment variables for Enoki integration
+  - Added troubleshooting section for common zkLogin/OAuth issues
+  - Integrated Walrus Sites deployment guide with production OAuth tips
+  - Documented dual-auth flow (zkLogin + standard wallets)
 
 ### [0.1.4] - 2026-01-18
 
