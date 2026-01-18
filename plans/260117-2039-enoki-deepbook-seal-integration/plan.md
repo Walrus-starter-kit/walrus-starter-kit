@@ -73,8 +73,8 @@ const { address, isLoggedIn, isUsingEnoki } = useSession();
 
 | Phase | Name | Effort | Priority | Status |
 |-------|------|--------|----------|--------|
-| 01 | Enoki Provider Setup | 2-3h | P1 | pending |
-| 02 | zkLogin Auth Flow | 3-4h | P1 | pending |
+| 01 | Enoki Provider Setup | 2-3h | P1 | complete |
+| 02 | Enoki Provider Integration | 1-2h | P1 | blocked (build failure) |
 | 03 | Sponsored Transaction API | 4-6h | P1 | pending |
 | 04 | Walrus Adapter Extension | 3-4h | P1 | pending |
 | 05 | DeepBook Integration | 8-12h | P2 | pending |

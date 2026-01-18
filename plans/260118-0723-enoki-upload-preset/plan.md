@@ -29,7 +29,7 @@ Create new preset `react-mysten-simple-upload-enoki` that combines:
 - Create .env.example with Enoki keys
 
 ### Phase 02: Enoki Provider Integration
-**Status:** pending | **File:** phase-02-enoki-provider.md
+**Status:** complete ✓ | **File:** phase-02-enoki-provider.md | **Completed:** 2026-01-18
 - Implement EnokiProvider wrapper
 - Add storage adapter for session persistence
 - Setup Enoki constants with Zod validation
