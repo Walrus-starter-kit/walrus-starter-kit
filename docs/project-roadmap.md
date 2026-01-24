@@ -6,8 +6,8 @@
 **Architecture:** Monorepo + Preset-Based Templates
 **Current Version:** 0.1.5
 **MVP Scope:** 3 Presets (React + Mysten, React + Mysten + Gallery, React + Mysten + Enoki)
-**Overall Completion:** 99.2% (Core MVP Complete, Enoki Logic Pending)
-**Last Update:** 2026-01-18 13:00
+**Overall Completion:** 99.6% (Template Catalog Migration Phase 03 Complete)
+**Last Update:** 2026-01-24 10:45
 
 ---
 
@@ -110,19 +110,42 @@
 - [ ] Phase 04: CLI Matrix & Integration testing
       **Target:** 2026-01-19
 
+### Phase 11: Template Catalog Migration (IN PROGRESS)
+
+- [x] Phase 01: Inventory & Mapping (Audited presets, verified scripts, mapped assets)
+- [x] Phase 02: Target Catalog Layout (Define directory taxonomy and metadata)
+- [x] Phase 03: Compatibility Matrix (Implemented `compatibility-rules.ts` and CLI gating)
+- [ ] Phase 04: Generator Approach (VFS composition mechanics)
+- [ ] Phase 05: Migration Plan (Stepwise migration to catalog structure)
+      **Target:** 2026-01-26
+
 ---
 
 ## 📈 Progress Summary
 
-- **Overall Completion:** 99.2% (Core MVP + Enoki Scaffolding Complete)
-- **Current Milestone:** v0.1.5 (Enoki Documentation Complete)
-- **Next Milestone:** v0.2.0 (Enoki Provider Implementation)
+- **Overall Completion:** 99.6% (Phase 03 Catalog Migration Complete)
+- **Current Milestone:** v0.1.7 (Compatibility Rules Implemented)
+- **Next Milestone:** v0.2.0 (Enoki Logic + Catalog Migration)
+
 - **Production Status:** React + Mysten presets ready for production use
 - **Beta Status:** Enoki preset scaffolding complete, logic implementation pending
 
 ---
 
 ## 📝 Changelog
+
+### [0.1.7] - 2026-01-24
+
+#### Added
+
+- **Template Catalog Migration (Phase 11/03)** - Compatibility and Stability Gating
+  - Implemented `compatibility-rules.ts` for centralized stability/compatibility gating
+  - Integrated gating into `prompts.ts` to hide "Planned" options from CLI users
+  - Updated `validator.ts` to enforce rules for CLI flag-based selections
+  - Achieved 100% test coverage for validation logic
+  - Defined target layout taxonomy (Phase 11/02)
+
+### [0.1.6] - 2026-01-24
 
 ### [0.1.5] - 2026-01-18
 
