@@ -87,3 +87,4 @@ repomix-output.xml
 
 # Plans and Reports (keep in version control but ignore temp files)
 plans/reports/*.tmp
+create-better-t-stack 
